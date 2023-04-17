@@ -29,7 +29,9 @@ const Home: NextPage = () => {
                 <button
                   onClick={() => {
                     setIsLoading(true);
-                    signIn("github");
+                    signIn("github").catch(() => {
+                      throw new Error("An error occurred while signing in");
+                    });
                   }}
                   disabled={isLoading}
                   className="inline-flex h-10 items-center justify-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-slate-100"
@@ -44,7 +46,9 @@ const Home: NextPage = () => {
                     className="relative h-8 w-8 overflow-hidden rounded-full"
                     onClick={() => {
                       setIsLoading(true);
-                      signOut();
+                      signOut().catch(() => {
+                        throw new Error("An error occurred while signing out");
+                      });
                     }}
                     disabled={isLoading}
                   >
