@@ -11,11 +11,9 @@ export const CurrentUserMenu = () => {
 
   return (
     <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="relative overflow-hidden rounded-full">
-          <CurrentUserAvatar />
-        </Menu.Button>
-      </div>
+      <Menu.Button>
+        <CurrentUserAvatar />
+      </Menu.Button>
       <Transition
         as={Fragment}
         enter="transition ease-out duration-100"
