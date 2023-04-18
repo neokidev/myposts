@@ -1,15 +1,14 @@
-import { type NextPage } from "next";
-import Head from "next/head";
-import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
-
-import { IconBrandGithubFilled } from "@tabler/icons-react";
-import { useState } from "react";
-import Image from "next/image";
+import { IconBrandGithubFilled } from '@tabler/icons-react'
+import { type NextPage } from 'next'
+import { signIn, signOut, useSession } from 'next-auth/react'
+import Head from 'next/head'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useState } from 'react'
 
 const Home: NextPage = () => {
-  const { data: sessionData, status } = useSession();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { data: sessionData, status } = useSession()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   return (
     <>
@@ -25,13 +24,13 @@ const Home: NextPage = () => {
               <Link href="/">
                 <span className="font-bold">myposts</span>
               </Link>
-              {status === "unauthenticated" && (
+              {status === 'unauthenticated' && (
                 <button
                   onClick={() => {
-                    setIsLoading(true);
-                    signIn("github").catch(() => {
-                      throw new Error("An error occurred while signing in");
-                    });
+                    setIsLoading(true)
+                    signIn('github').catch(() => {
+                      throw new Error('An error occurred while signing in')
+                    })
                   }}
                   disabled={isLoading}
                   className="inline-flex h-10 items-center justify-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-slate-100"
@@ -40,15 +39,15 @@ const Home: NextPage = () => {
                   <IconBrandGithubFilled size={18} className="ml-1" />
                 </button>
               )}
-              {status === "authenticated" &&
+              {status === 'authenticated' &&
                 sessionData.user?.image != null && (
                   <button
                     className="relative h-8 w-8 overflow-hidden rounded-full"
                     onClick={() => {
-                      setIsLoading(true);
+                      setIsLoading(true)
                       signOut().catch(() => {
-                        throw new Error("An error occurred while signing out");
-                      });
+                        throw new Error('An error occurred while signing out')
+                      })
                     }}
                     disabled={isLoading}
                   >
@@ -63,7 +62,7 @@ const Home: NextPage = () => {
         </main>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
