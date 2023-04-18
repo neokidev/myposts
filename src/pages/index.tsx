@@ -36,7 +36,7 @@ const Home: NextPage = () => {
                   disabled={isLoading}
                   className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-gray-100"
                 >
-                  Login with
+                  Sign in with
                   <IconBrandGithubFilled size={18} className="ml-1" />
                 </button>
               )}
