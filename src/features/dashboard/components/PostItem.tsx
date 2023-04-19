@@ -84,13 +84,13 @@ export const PostItem: FC<PostItemProps> = ({ post, editUrl, onDelete }) => {
   )
 
   return (
-    <div className="flex items-center rounded-lg border bg-white px-6 py-4">
-      <div className="min-w-0 flex-1 space-y-1 pr-4">
+    <div className="flex items-center px-5 py-4">
+      <div className="min-w-0 flex-1 pr-4">
         <div className="flex items-center space-x-1">
           <h5 className="break-words text-xl font-bold line-clamp-2">
             {post.title}
           </h5>
-          <div className="pb-0.5">{!post.published && <DraftBadge />}</div>
+          <div className="pb-1">{!post.published && <DraftBadge />}</div>
         </div>
         <div className="text-sm font-light text-gray-400">
           updated {dayjs(post.updatedAt).fromNow()}

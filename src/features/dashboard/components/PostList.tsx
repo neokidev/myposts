@@ -14,7 +14,7 @@ export const PostList: FC<PostListProps> = ({
   onDeletePost,
 }) => {
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="border border-gray-200 rounded-md divide-y divide-gray-200">
       {posts.map((post) => (
         <PostItem
           key={post.id}
