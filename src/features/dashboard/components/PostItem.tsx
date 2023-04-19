@@ -1,11 +1,11 @@
 import { DeleteConfirmationModal } from '@/features/dashboard/components/DeleteConfirmationModal'
 import { Menu } from '@headlessui/react'
+import { type Post } from '@prisma/client'
 import { IconAlertCircle, IconDots, IconPencil } from '@tabler/icons-react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link'
 import { useCallback, useMemo, useState, type FC, type ReactNode } from 'react'
-import { type Post } from '../types/post'
 
 dayjs.extend(relativeTime)
 

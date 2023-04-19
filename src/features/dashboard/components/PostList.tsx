@@ -1,4 +1,4 @@
-import { type Post } from '@/features/dashboard/types/post'
+import { type Post } from '@prisma/client'
 import { type FC } from 'react'
 import { PostItem } from './PostItem'
 
