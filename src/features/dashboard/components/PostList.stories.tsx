@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { userEvent, within } from '@storybook/testing-library'
 import dayjs from 'dayjs'
 import { type Post } from '../types/post'
 import { PostList } from './PostList'
@@ -44,4 +45,14 @@ type Story = StoryObj<typeof PostList>
 
 export const ListingPosts: Story = {
   args: { posts, editPostUrl: () => '#', onDeletePost: () => null },
+}
+
+export const OpenFirstPostDetailMenu: Story = {
+  args: { posts, editPostUrl: () => '#', onDeletePost: () => null },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const detailButtons = canvas.getAllByRole('button', { name: 'detail' })
+    const firstDetailButton = detailButtons[0] as HTMLElement
+    await Promise.resolve(userEvent.click(firstDetailButton))
+  },
 }
