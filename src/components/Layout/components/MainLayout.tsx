@@ -1,12 +1,30 @@
 import { Header } from '@/components/Layout/components/Header'
+import { useSession } from 'next-auth/react'
 import Head from 'next/head'
-import { type FC, type ReactNode } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, type FC, type ReactNode } from 'react'
 
 type MainLayoutProps = {
   children: ReactNode
+  isProtected?: boolean
 }
 
-export const MainLayout: FC<MainLayoutProps> = ({ children }) => {
+export const MainLayout: FC<MainLayoutProps> = ({ children, isProtected }) => {
+  const router = useRouter()
+  const { data: session } = useSession()
+
+  useEffect(() => {
+    if (isProtected && session == null) {
+      router.push('/').catch(() => {
+        throw new Error()
+      })
+    }
+  }, [])
+
+  if (isProtected && session == null) {
+    return null
+  }
+
   return (
     <>
       <Head>
