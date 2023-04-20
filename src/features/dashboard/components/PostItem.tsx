@@ -1,4 +1,4 @@
-import { DeleteConfirmationModal } from '@/features/dashboard/components/DeleteConfirmationModal'
+import { ConfirmDeleteModal } from '@/features/dashboard/components/ConfirmDeleteModal'
 import { Menu } from '@headlessui/react'
 import { type Post } from '@prisma/client'
 import { IconAlertCircle, IconDots, IconPencil } from '@tabler/icons-react'
@@ -61,7 +61,7 @@ const DetailButton: FC<DetailButtonProps> = ({ children, deletePost }) => {
         </Menu.Items>
       </Menu>
 
-      <DeleteConfirmationModal
+      <ConfirmDeleteModal
         isOpen={isModalOpened}
         onClose={closeModal}
         deletePost={deletePost}

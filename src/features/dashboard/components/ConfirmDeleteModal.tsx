@@ -1,13 +1,13 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, type FC } from 'react'
 
-type DeleteConfirmationModalProps = {
+type ConfirmDeleteModalProps = {
   isOpen: boolean
   onClose: () => void
   deletePost: () => void
 }
 
-export const DeleteConfirmationModal: FC<DeleteConfirmationModalProps> = ({
+export const ConfirmDeleteModal: FC<ConfirmDeleteModalProps> = ({
   isOpen,
   onClose,
   deletePost,
