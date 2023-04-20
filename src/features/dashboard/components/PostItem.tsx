@@ -1,11 +1,11 @@
-import { DeleteConfirmationModal } from '@/features/dashboard/components/DeleteConfirmationModal'
+import { ConfirmDeleteModal } from '@/features/dashboard/components/ConfirmDeleteModal'
 import { Menu } from '@headlessui/react'
+import { type Post } from '@prisma/client'
 import { IconAlertCircle, IconDots, IconPencil } from '@tabler/icons-react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link'
 import { useCallback, useMemo, useState, type FC, type ReactNode } from 'react'
-import { type Post } from '../types/post'
 
 dayjs.extend(relativeTime)
 
@@ -61,7 +61,7 @@ const DetailButton: FC<DetailButtonProps> = ({ children, deletePost }) => {
         </Menu.Items>
       </Menu>
 
-      <DeleteConfirmationModal
+      <ConfirmDeleteModal
         isOpen={isModalOpened}
         onClose={closeModal}
         deletePost={deletePost}
@@ -87,9 +87,11 @@ export const PostItem: FC<PostItemProps> = ({ post, editUrl, onDelete }) => {
     <div className="flex items-center px-5 py-4">
       <div className="min-w-0 flex-1 pr-4">
         <div className="flex items-center space-x-1">
-          <h5 className="break-words text-xl font-bold line-clamp-2">
-            {post.title}
-          </h5>
+          <Link href={_editUrl}>
+            <h5 className="break-words text-xl font-bold line-clamp-2 hover:text-gray-700">
+              {post.title}
+            </h5>
+          </Link>
           <div className="pb-1">{!post.published && <DraftBadge />}</div>
         </div>
         <div className="text-sm font-light text-gray-400">

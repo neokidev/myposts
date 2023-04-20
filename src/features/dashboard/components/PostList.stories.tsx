@@ -1,7 +1,7 @@
+import { type Post } from '@prisma/client'
 import type { Meta, StoryObj } from '@storybook/react'
 import { userEvent, within } from '@storybook/testing-library'
 import dayjs from 'dayjs'
-import { type Post } from '../types/post'
 import { PostList } from './PostList'
 
 const posts: Post[] = [
@@ -10,9 +10,9 @@ const posts: Post[] = [
     title: 'Test title 1',
     content: 'Test content 1',
     published: true,
-    publishedAt: dayjs().subtract(1, 'day').toDate(),
     createdAt: dayjs().subtract(3, 'day').toDate(),
     updatedAt: dayjs().subtract(2, 'day').toDate(),
+    authorId: '1',
   },
   {
     id: '2',
@@ -21,15 +21,16 @@ const posts: Post[] = [
     published: false,
     createdAt: dayjs().subtract(2, 'day').toDate(),
     updatedAt: dayjs().subtract(2, 'day').toDate(),
+    authorId: '1',
   },
   {
     id: '3',
     title: 'Test title 3',
     content: 'Test content 3',
     published: true,
-    publishedAt: dayjs().subtract(1, 'day').toDate(),
     createdAt: dayjs().subtract(3, 'day').toDate(),
     updatedAt: dayjs().toDate(),
+    authorId: '1',
   },
 ]
 
