@@ -7,7 +7,7 @@ import { type NextPage } from 'next'
 import { useCallback } from 'react'
 
 const createEditPostUrl = (post: Post) => {
-  return ''
+  return `/post/${post.id}/edit`
 }
 
 const PostListArea = () => {
