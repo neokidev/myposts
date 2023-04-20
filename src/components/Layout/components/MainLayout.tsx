@@ -2,7 +2,7 @@ import { Header } from '@/components/Layout/components/Header'
 import { useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useEffect, type FC, type ReactNode } from 'react'
+import { useEffect, useState, type FC, type ReactNode } from 'react'
 
 type MainLayoutProps = {
   children: ReactNode
@@ -10,18 +10,19 @@ type MainLayoutProps = {
 }
 
 export const MainLayout: FC<MainLayoutProps> = ({ children, isProtected }) => {
+  const [_isProtected] = useState(isProtected)
+  const { status } = useSession()
   const router = useRouter()
-  const { data: session } = useSession()
 
   useEffect(() => {
-    if (isProtected && session == null) {
+    if (_isProtected && status === 'unauthenticated') {
       router.push('/').catch(() => {
         throw new Error()
       })
     }
-  }, [])
+  }, [_isProtected, status, router])
 
-  if (isProtected && session == null) {
+  if (_isProtected && status !== 'authenticated') {
     return null
   }
 
