@@ -87,9 +87,11 @@ export const PostItem: FC<PostItemProps> = ({ post, editUrl, onDelete }) => {
     <div className="flex items-center px-5 py-4">
       <div className="min-w-0 flex-1 pr-4">
         <div className="flex items-center space-x-1">
-          <h5 className="break-words text-xl font-bold line-clamp-2">
-            {post.title}
-          </h5>
+          <Link href={_editUrl}>
+            <h5 className="break-words text-xl font-bold line-clamp-2 hover:text-gray-700">
+              {post.title}
+            </h5>
+          </Link>
           <div className="pb-1">{!post.published && <DraftBadge />}</div>
         </div>
         <div className="text-sm font-light text-gray-400">
