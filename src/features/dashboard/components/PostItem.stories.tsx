@@ -1,7 +1,7 @@
+import { type Post } from '@prisma/client'
 import type { Meta, StoryObj } from '@storybook/react'
 import { userEvent, within } from '@storybook/testing-library'
 import dayjs from 'dayjs'
-import { type Post } from '../types/post'
 import { PostItem } from './PostItem'
 
 const post: Post = {
@@ -9,9 +9,9 @@ const post: Post = {
   title: 'Test title',
   content: 'Test content',
   published: true,
-  publishedAt: dayjs().subtract(1, 'day').toDate(),
   createdAt: dayjs().subtract(3, 'day').toDate(),
   updatedAt: dayjs().subtract(2, 'day').toDate(),
+  authorId: '1',
 }
 
 const meta: Meta<typeof PostItem> = {
