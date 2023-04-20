@@ -4,17 +4,27 @@ import { PostList } from '@/features/dashboard/components/PostList'
 import { api } from '@/utils/api'
 import { type Post } from '@prisma/client'
 import { type NextPage } from 'next'
+import { useCallback } from 'react'
 
 const createEditPostUrl = (post: Post) => {
   return ''
 }
 
-const handleDeletePost = (post: Post) => {
-  return
-}
-
 const PostListArea = () => {
-  const { data: posts } = api.post.getCurrentUserPosts.useQuery()
+  const { data: posts, refetch } = api.post.getCurrentUserPosts.useQuery()
+  const deleteMutation = api.post.deletePost.useMutation({
+    onSuccess: () => {
+      refetch().catch(() => {
+        throw new Error('Failed to refetch posts')
+      })
+    },
+  })
+
+  const handleDeletePost = useCallback(
+    (post: Post) => deleteMutation.mutate({ postId: post.id }),
+    [deleteMutation]
+  )
+
   if (posts === undefined) {
     return null
   }
