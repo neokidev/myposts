@@ -6,7 +6,11 @@ import { type Post } from '@prisma/client'
 import { type NextPage } from 'next'
 import { useCallback } from 'react'
 
-const createEditPostUrl = (post: Post) => {
+const generatePostUrl = (post: Post) => {
+  return `/posts/${post.id}`
+}
+
+const generateEditPostUrl = (post: Post) => {
   return `/post/${post.id}/edit`
 }
 
@@ -32,7 +36,8 @@ const PostListArea = () => {
   return (
     <PostList
       posts={posts}
-      editPostUrl={createEditPostUrl}
+      postUrl={generatePostUrl}
+      editPostUrl={generateEditPostUrl}
       onDeletePost={handleDeletePost}
     />
   )

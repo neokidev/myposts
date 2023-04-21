@@ -5,7 +5,7 @@ import { IconAlertCircle, IconDots, IconPencil } from '@tabler/icons-react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link'
-import { useCallback, useMemo, useState, type FC, type ReactNode } from 'react'
+import { useCallback, useState, type FC, type ReactNode } from 'react'
 
 dayjs.extend(relativeTime)
 
@@ -72,22 +72,24 @@ const DetailButton: FC<DetailButtonProps> = ({ children, deletePost }) => {
 
 type PostItemProps = {
   post: Post
-  editUrl: string | ((post: Post) => string)
+  postUrl: string
+  editUrl: string
   onDelete: (post: Post) => void
 }
 
-export const PostItem: FC<PostItemProps> = ({ post, editUrl, onDelete }) => {
+export const PostItem: FC<PostItemProps> = ({
+  post,
+  postUrl,
+  editUrl,
+  onDelete,
+}) => {
   const deletePost = useCallback(() => onDelete(post), [post, onDelete])
-  const _editUrl = useMemo(
-    () => (typeof editUrl === 'string' ? editUrl : editUrl(post)),
-    [post, editUrl]
-  )
 
   return (
     <div className="flex items-center px-5 py-4">
       <div className="min-w-0 flex-1 pr-4">
         <div className="flex items-center space-x-1">
-          <Link href={`/posts/${post.id}`}>
+          <Link href={postUrl}>
             <h5 className="break-words text-xl font-bold line-clamp-2 hover:text-gray-700">
               {post.title}
             </h5>
@@ -99,7 +101,7 @@ export const PostItem: FC<PostItemProps> = ({ post, editUrl, onDelete }) => {
         </div>
       </div>
       <div className="col-span-1 flex items-center justify-center space-x-2">
-        <Link href={_editUrl} className={buttonClassName}>
+        <Link href={editUrl} className={buttonClassName}>
           <IconPencil className="h-4 w-4" />
         </Link>
         <DetailButton deletePost={deletePost}>

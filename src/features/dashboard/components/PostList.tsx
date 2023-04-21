@@ -4,12 +4,14 @@ import { PostItem } from './PostItem'
 
 type PostListProps = {
   posts: Post[]
+  postUrl: (post: Post) => string
   editPostUrl: (post: Post) => string
   onDeletePost: (post: Post) => void
 }
 
 export const PostList: FC<PostListProps> = ({
   posts,
+  postUrl,
   editPostUrl,
   onDeletePost,
 }) => {
@@ -19,8 +21,9 @@ export const PostList: FC<PostListProps> = ({
         <PostItem
           key={post.id}
           post={post}
+          postUrl={postUrl(post)}
           editUrl={editPostUrl(post)}
-          onDelete={() => onDeletePost(post)}
+          onDelete={onDeletePost}
         />
       ))}
     </div>
