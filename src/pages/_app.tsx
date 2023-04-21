@@ -1,4 +1,5 @@
 import '@/styles/globals.css'
+import '@/styles/prism-dracula-theme.css'
 import { api } from '@/utils/api'
 import { type Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'

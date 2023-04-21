@@ -4,6 +4,7 @@ import { prisma } from '@/server/prisma'
 import { type GetStaticPaths, type GetStaticProps, type NextPage } from 'next'
 import { type MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
+import rehypePrism from 'rehype-prism-plus'
 
 type Props = {
   post: {
@@ -33,7 +34,13 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   }
 
   const serializedContent =
-    post.content !== null ? await serialize(post.content) : undefined
+    post.content !== null
+      ? await serialize(post.content, {
+          mdxOptions: {
+            rehypePlugins: [rehypePrism],
+          },
+        })
+      : undefined
 
   return {
     props: {
