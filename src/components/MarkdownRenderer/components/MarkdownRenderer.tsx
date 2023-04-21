@@ -1,5 +1,4 @@
 import { Callout } from '@/components/MarkdownRenderer/components/Callout'
-import { Hello } from '@/components/MarkdownRenderer/components/Hello'
 import clsx from 'clsx'
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { type FC } from 'react'
@@ -163,7 +162,6 @@ const components = {
       {...props}
     />
   ),
-  Hello,
   Callout,
 }
 
