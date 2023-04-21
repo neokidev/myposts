@@ -1,9 +1,15 @@
+import { Hello } from '@/components/Hello'
 import { MainLayout } from '@/components/Layout'
 import { prisma } from '@/server/prisma'
 import { type GetStaticPaths, type GetStaticProps, type NextPage } from 'next'
+import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote'
+import { serialize } from 'next-mdx-remote/serialize'
 
 type Props = {
-  post: { id: string }
+  post: {
+    title: string
+    serializedContent?: MDXRemoteSerializeResult
+  }
 }
 
 type Params = {
@@ -26,7 +32,12 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     return { notFound: true }
   }
 
-  return { props: { post: { id: post.id } } }
+  const serializedContent =
+    post.content !== null ? await serialize(post.content) : undefined
+
+  return {
+    props: { post: { title: post.title, serializedContent } },
+  }
 }
 
 export const getStaticPaths: GetStaticPaths<Params> = async () => {
@@ -47,10 +58,15 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
   }
 }
 
+const components = { Hello }
+
 const PostPage: NextPage<Props> = ({ post }) => {
   return (
-    <MainLayout>
-      <div>Post ID: {post.id}</div>
+    <MainLayout className="max-w-3xl">
+      <h1>{post.title}</h1>
+      {post.serializedContent !== undefined && (
+        <MDXRemote {...post.serializedContent} components={components} />
+      )}
     </MainLayout>
   )
 }
