@@ -5,6 +5,7 @@ import { type GetStaticPaths, type GetStaticProps, type NextPage } from 'next'
 import { type MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 import rehypePrism from 'rehype-prism-plus'
+import remarkGfm from 'remark-gfm'
 
 type Props = {
   post: {
@@ -37,6 +38,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     post.content !== null
       ? await serialize(post.content, {
           mdxOptions: {
+            remarkPlugins: [remarkGfm],
             rehypePlugins: [rehypePrism],
           },
         })

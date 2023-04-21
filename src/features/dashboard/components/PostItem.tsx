@@ -87,7 +87,7 @@ export const PostItem: FC<PostItemProps> = ({ post, editUrl, onDelete }) => {
     <div className="flex items-center px-5 py-4">
       <div className="min-w-0 flex-1 pr-4">
         <div className="flex items-center space-x-1">
-          <Link href={_editUrl}>
+          <Link href={`/posts/${post.id}`}>
             <h5 className="break-words text-xl font-bold line-clamp-2 hover:text-gray-700">
               {post.title}
             </h5>
