@@ -10,7 +10,7 @@ export const CurrentUserMenu = () => {
     useState<boolean>(false)
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className="relative flex items-center justify-center">
       <Menu.Button>
         <CurrentUserAvatar />
       </Menu.Button>
