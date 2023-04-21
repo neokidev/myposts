@@ -11,7 +11,7 @@ const generatePostUrl = (post: Post) => {
 }
 
 const generateEditPostUrl = (post: Post) => {
-  return `/post/${post.id}/edit`
+  return `/posts/${post.id}/edit`
 }
 
 const PostListArea = () => {
