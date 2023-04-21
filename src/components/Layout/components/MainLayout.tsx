@@ -1,4 +1,5 @@
 import { Header } from '@/components/Layout/components/Header'
+import clsx from 'clsx'
 import { useSession } from 'next-auth/react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
@@ -6,10 +7,15 @@ import { useEffect, useState, type FC, type ReactNode } from 'react'
 
 type MainLayoutProps = {
   children: ReactNode
+  className?: string
   isProtected?: boolean
 }
 
-export const MainLayout: FC<MainLayoutProps> = ({ children, isProtected }) => {
+export const MainLayout: FC<MainLayoutProps> = ({
+  children,
+  className,
+  isProtected,
+}) => {
   const [_isProtected] = useState(isProtected)
   const { status } = useSession()
   const router = useRouter()
@@ -35,7 +41,7 @@ export const MainLayout: FC<MainLayoutProps> = ({ children, isProtected }) => {
       </Head>
       <div className="flex min-h-screen flex-col bg-white text-black space-y-6">
         <Header />
-        <main className="container flex-1">{children}</main>
+        <main className={clsx(className, 'container flex-1')}>{children}</main>
       </div>
     </>
   )

@@ -45,11 +45,21 @@ export default meta
 type Story = StoryObj<typeof PostList>
 
 export const ListingPosts: Story = {
-  args: { posts, editPostUrl: () => '#', onDeletePost: () => null },
+  args: {
+    posts,
+    postUrl: () => '#',
+    editPostUrl: () => '#',
+    onDeletePost: () => null,
+  },
 }
 
 export const OpenFirstPostDetailMenu: Story = {
-  args: { posts, editPostUrl: () => '#', onDeletePost: () => null },
+  args: {
+    posts,
+    postUrl: () => '#',
+    editPostUrl: () => '#',
+    onDeletePost: () => null,
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     const detailButtons = canvas.getAllByRole('button', { name: 'detail' })
