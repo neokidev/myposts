@@ -10,7 +10,7 @@ export const CurrentUserAvatar = () => {
       {session?.user.image != null ? (
         <Image src={session.user.image} alt="avatar" width={32} height={32} />
       ) : (
-        <UserIcon className="h-8 w-8 rounded-full bg-gray-300 p-1 text-white" />
+        <UserIcon className="h-8 w-8 rounded-full bg-gray-400 p-1 text-white" />
       )}
     </div>
   )
