@@ -31,6 +31,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.56.0
   '@vitejs/plugin-react': ^3.1.0
   autoprefixer: ^10.4.14
+  clsx: ^1.2.1
   css-loader: ^6.7.3
   dayjs: ^1.11.7
   eslint: ^8.36.0
@@ -67,6 +68,7 @@ dependencies:
   '@trpc/next': 10.20.0_bpcotgst6vp6sowduekx5ycrdu
   '@trpc/react-query': 10.20.0_khoxibkk4crjzebfjva2ltse6a
   '@trpc/server': 10.20.0
+  clsx: 1.2.1
   dayjs: 1.11.7
   next: 13.3.0_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.22.0_yucv4tfv7v7nrkw2uguegj6e7e
@@ -5728,6 +5730,11 @@ packages:
       kind-of: 6.0.3
       shallow-clone: 3.0.1
     dev: true
+
+  /clsx/1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
+    dev: false
 
   /color-convert/1.9.3:
     resolution: {integrity: sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==}
