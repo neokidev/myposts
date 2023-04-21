@@ -25,7 +25,7 @@ export default meta
 type Story = StoryObj<typeof PostItem>
 
 export const PublishedPost: Story = {
-  args: { post, editUrl: '#', onDelete: () => null },
+  args: { post, postUrl: '#', editUrl: '#', onDelete: () => null },
 }
 
 export const DraftPost: Story = {
@@ -34,13 +34,19 @@ export const DraftPost: Story = {
       ...post,
       published: false,
     },
+    postUrl: '#',
     editUrl: '#',
     onDelete: () => null,
   },
 }
 
 export const OpenDetailMenu: Story = {
-  args: { post, editUrl: '#', onDelete: () => null },
+  args: {
+    post,
+    postUrl: '#',
+    editUrl: '#',
+    onDelete: () => null,
+  },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     const detailButton = canvas.getByRole('button', { name: 'detail' })
