@@ -1,8 +1,8 @@
-import { Hello } from '@/components/Hello'
 import { MainLayout } from '@/components/Layout'
+import { MarkdownRenderer } from '@/components/MarkdownRenderer/components/MarkdownRenderer'
 import { prisma } from '@/server/prisma'
 import { type GetStaticPaths, type GetStaticProps, type NextPage } from 'next'
-import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote'
+import { type MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 
 type Props = {
@@ -36,7 +36,12 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     post.content !== null ? await serialize(post.content) : undefined
 
   return {
-    props: { post: { title: post.title, serializedContent } },
+    props: {
+      post: {
+        title: post.title,
+        serializedContent,
+      },
+    },
   }
 }
 
@@ -58,14 +63,14 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
   }
 }
 
-const components = { Hello }
-
 const PostPage: NextPage<Props> = ({ post }) => {
   return (
     <MainLayout className="max-w-3xl">
-      <h1>{post.title}</h1>
+      <h1 className="mb-4 inline-block text-4xl font-extrabold leading-tight text-slate-900 lg:text-5xl">
+        {post.title}
+      </h1>
       {post.serializedContent !== undefined && (
-        <MDXRemote {...post.serializedContent} components={components} />
+        <MarkdownRenderer content={post.serializedContent} />
       )}
     </MainLayout>
   )
