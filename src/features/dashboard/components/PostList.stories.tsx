@@ -67,3 +67,9 @@ export const OpenFirstPostDetailMenu: Story = {
     await Promise.resolve(userEvent.click(firstDetailButton))
   },
 }
+
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+  },
+}
