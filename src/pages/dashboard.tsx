@@ -15,7 +15,11 @@ const generateEditPostUrl = (post: Post) => {
 }
 
 const PostListArea = () => {
-  const { data: posts, refetch } = api.post.getCurrentUserPosts.useQuery()
+  const {
+    data: posts,
+    isLoading,
+    refetch,
+  } = api.post.getCurrentUserPosts.useQuery()
   const deleteMutation = api.post.deletePost.useMutation({
     onSuccess: () => {
       refetch().catch(() => {
@@ -29,13 +33,10 @@ const PostListArea = () => {
     [deleteMutation]
   )
 
-  if (posts === undefined) {
-    return null
-  }
-
   return (
     <PostList
       posts={posts}
+      isLoading={isLoading}
       postUrl={generatePostUrl}
       editPostUrl={generateEditPostUrl}
       onDeletePost={handleDeletePost}

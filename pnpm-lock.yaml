@@ -23,6 +23,7 @@ specifiers:
   '@trpc/react-query': ^10.18.0
   '@trpc/server': ^10.18.0
   '@types/eslint': ^8.21.3
+  '@types/lodash': ^4.14.194
   '@types/node': ^18.15.5
   '@types/prettier': ^2.7.2
   '@types/react': ^18.0.28
@@ -39,6 +40,7 @@ specifiers:
   eslint-config-prettier: ^8.8.0
   eslint-plugin-storybook: ^0.6.11
   jsdom: ^21.1.1
+  lodash: ^4.17.21
   next: ^13.2.4
   next-auth: ^4.21.0
   next-mdx-remote: ^4.4.1
@@ -49,6 +51,7 @@ specifiers:
   prettier-plugin-tailwindcss: ^0.2.6
   prisma: ^4.11.0
   react: 18.2.0
+  react-content-loader: ^6.2.1
   react-dom: 18.2.0
   rehype-prism-plus: ^1.5.1
   remark-gfm: ^3.0.1
@@ -73,10 +76,12 @@ dependencies:
   '@trpc/server': 10.20.0
   clsx: 1.2.1
   dayjs: 1.11.7
+  lodash: 4.17.21
   next: 13.3.0_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.22.0_yucv4tfv7v7nrkw2uguegj6e7e
   next-mdx-remote: 4.4.1_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
+  react-content-loader: 6.2.1_react@18.2.0
   react-dom: 18.2.0_react@18.2.0
   rehype-prism-plus: 1.5.1
   remark-gfm: 3.0.1
@@ -96,6 +101,7 @@ devDependencies:
   '@testing-library/react': 14.0.0_biqbaboplfbrettd7655fr4n2y
   '@testing-library/user-event': 14.4.3
   '@types/eslint': 8.37.0
+  '@types/lodash': 4.14.194
   '@types/node': 18.15.11
   '@types/prettier': 2.7.2
   '@types/react': 18.0.35
@@ -8780,7 +8786,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /longest-streak/3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
@@ -10725,6 +10730,15 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: true
+
+  /react-content-loader/6.2.1_react@18.2.0:
+    resolution: {integrity: sha512-6ONbFX+Hi3SHuP66JB8CPvJn372pj+qwltJV0J8z/8MFrq98I1cbFdZuhDWeQXu3CFxiiDTXJn7DFxx2ZvrO7g==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16.0.0'
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /react-docgen-typescript/2.2.2_typescript@5.0.4:
     resolution: {integrity: sha512-tvg2ZtOpOi6QDwsb3GZhOjDkkX0h8Z2gipvTg6OVMUyoYoURhEiRNePT8NZItTVCDh39JJHnLdfCOkzoLbFnTg==}
