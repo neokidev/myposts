@@ -1,4 +1,4 @@
-import { type Post } from '@prisma/client'
+import { type Post } from '@/features/post-card/types/post'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Image from 'next/image'
@@ -7,25 +7,20 @@ import { type FC } from 'react'
 
 dayjs.extend(relativeTime)
 
-type PostCardProps = {
+export type PostCardProps = {
   post: Post
-  authorName: string
-  width?: number
 }
 
-export const PostCard: FC<PostCardProps> = ({ post, authorName, width }) => {
+export const PostCard: FC<PostCardProps> = ({ post }) => {
   return (
-    <article
-      className="overflow-hidden rounded-lg border shadow-lg group"
-      style={{ width: width !== undefined ? `${width}px` : undefined }}
-    >
+    <article className="overflow-hidden rounded-lg border shadow-lg group">
       <Link href="#">
         <div className="relative h-40 overflow-hidden">
           <Image
             alt="Placeholder"
             src="https://picsum.photos/600/400/?random"
             fill
-            className="group-hover:scale-125 ease-in-out duration-500"
+            className="group-hover:scale-125 ease-in-out duration-300"
           />
         </div>
         <div className="p-4 space-y-3">
@@ -43,7 +38,7 @@ export const PostCard: FC<PostCardProps> = ({ post, authorName, width }) => {
                 fill
               />
             </div>
-            <p className="ml-1.5 text-sm">{authorName}</p>
+            <p className="ml-1.5 text-sm">{post.authorName}</p>
           </Link>
           <div className="text-xs text-gray-500 font-light">
             {dayjs(post.createdAt).fromNow()}
