@@ -28,7 +28,7 @@ export const PostCard: FC<PostCardProps> = ({ post }) => {
             {post.title}
           </h1>
           <Link
-            className="flex items-center no-underline hover:underline"
+            className="flex items-center no-underline hover:underline space-x-1.5"
             href="#"
           >
             <div className="relative w-7 h-7 rounded-full overflow-hidden">
@@ -38,7 +38,7 @@ export const PostCard: FC<PostCardProps> = ({ post }) => {
                 fill
               />
             </div>
-            <p className="ml-1.5 text-sm">{post.authorName}</p>
+            <p className="text-sm">{post.authorName}</p>
           </Link>
           <div className="text-xs text-gray-500 font-light">
             {dayjs(post.createdAt).fromNow()}
