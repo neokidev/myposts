@@ -1,4 +1,4 @@
-import { type Post } from '@prisma/client'
+import { type Post } from '@/features/post-card/types/post'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Image from 'next/image'
@@ -7,49 +7,50 @@ import { type FC } from 'react'
 
 dayjs.extend(relativeTime)
 
-type PostCardProps = {
+export type PostCardProps = {
   post: Post
-  authorName: string
-  width?: number
+  postUrl: string
 }
 
-export const PostCard: FC<PostCardProps> = ({ post, authorName, width }) => {
+export const PostCard: FC<PostCardProps> = ({ post, postUrl }) => {
   return (
-    <article
-      className="overflow-hidden rounded-lg border shadow-lg group"
-      style={{ width: width !== undefined ? `${width}px` : undefined }}
-    >
-      <Link href="#">
-        <div className="relative h-40 overflow-hidden">
-          <Image
-            alt="Placeholder"
-            src="https://picsum.photos/600/400/?random"
-            fill
-            className="group-hover:scale-125 ease-in-out duration-500"
-          />
-        </div>
-        <div className="p-4 space-y-3">
-          <h1 className="text-xl font-bold line-clamp-3 group-hover:text-gray-600">
+    <article className="overflow-hidden rounded-lg border shadow-lg group">
+      <Link href={postUrl} className="relative h-40 overflow-hidden block">
+        <Image
+          alt="Placeholder"
+          src="https://picsum.photos/600/400/?random"
+          fill
+          className="group-hover:scale-125 ease-in-out duration-300"
+        />
+      </Link>
+      <div className="p-4 space-y-3">
+        <Link href={postUrl}>
+          <h1 className="inline text-xl font-bold line-clamp-3 hover:text-gray-600">
             {post.title}
           </h1>
+        </Link>
+        <div className="flex items-center space-x-2">
           <Link
-            className="flex items-center no-underline hover:underline"
             href="#"
+            className="relative w-7 h-7 rounded-full overflow-hidden"
           >
-            <div className="relative w-7 h-7 rounded-full overflow-hidden">
-              <Image
-                alt="Placeholder"
-                src="https://picsum.photos/32/32/?random"
-                fill
-              />
-            </div>
-            <p className="ml-1.5 text-sm">{authorName}</p>
+            <Image
+              alt="Placeholder"
+              src="https://picsum.photos/32/32/?random"
+              fill
+            />
           </Link>
-          <div className="text-xs text-gray-500 font-light">
-            {dayjs(post.createdAt).fromNow()}
-          </div>
+          <Link
+            href="#"
+            className="inline text-sm no-underline hover:underline "
+          >
+            {post.authorName}
+          </Link>
         </div>
-      </Link>
+        <div className="text-xs text-gray-500 font-light">
+          {dayjs(post.createdAt).fromNow()}
+        </div>
+      </div>
     </article>
   )
 }

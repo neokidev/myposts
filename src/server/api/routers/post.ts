@@ -7,6 +7,17 @@ import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 export const postRouter = createTRPCRouter({
+  getPublishedPosts: publicProcedure
+    .input(z.object({ page: z.number().int(), pageSize: z.number().int() }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.post.findMany({
+        where: { published: true },
+        orderBy: { createdAt: 'desc' },
+        // skip: input.page * input.pageSize,
+        // take: input.pageSize,
+      })
+    }),
+
   getUserPosts: publicProcedure
     .input(z.object({ userId: z.string().cuid() }))
     .query(({ ctx, input }) => {
