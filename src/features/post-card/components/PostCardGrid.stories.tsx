@@ -26,3 +26,9 @@ export const Default: Story = {
     posts,
   },
 }
+
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+  },
+}

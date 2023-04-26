@@ -5,7 +5,7 @@ import { api } from '@/utils/api'
 import { type NextPage } from 'next'
 
 const Home: NextPage = () => {
-  const { data: posts } = api.post.getPublishedPosts.useQuery({
+  const { data: posts, isLoading } = api.post.getPublishedPosts.useQuery({
     page: 1,
     pageSize: 20,
   })
@@ -16,7 +16,7 @@ const Home: NextPage = () => {
     <MainLayout>
       <div className="flex flex-col items-center">
         <h1 className="text-4xl font-extrabold mb-6">New Posts</h1>
-        {transformedPosts && <PostCardGrid posts={transformedPosts} />}
+        <PostCardGrid posts={transformedPosts} isLoading={isLoading} />
       </div>
     </MainLayout>
   )
