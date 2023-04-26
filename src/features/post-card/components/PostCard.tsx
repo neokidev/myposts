@@ -9,12 +9,13 @@ dayjs.extend(relativeTime)
 
 export type PostCardProps = {
   post: Post
+  postUrl: string
 }
 
-export const PostCard: FC<PostCardProps> = ({ post }) => {
+export const PostCard: FC<PostCardProps> = ({ post, postUrl }) => {
   return (
     <article className="overflow-hidden rounded-lg border shadow-lg group">
-      <Link href="#" className="relative h-40 overflow-hidden block">
+      <Link href={postUrl} className="relative h-40 overflow-hidden block">
         <Image
           alt="Placeholder"
           src="https://picsum.photos/600/400/?random"
@@ -23,7 +24,7 @@ export const PostCard: FC<PostCardProps> = ({ post }) => {
         />
       </Link>
       <div className="p-4 space-y-3">
-        <Link href="#">
+        <Link href={postUrl}>
           <h1 className="inline text-xl font-bold line-clamp-3 hover:text-gray-600">
             {post.title}
           </h1>

@@ -4,12 +4,22 @@ import { type Post } from '@/features/post-card/types/post'
 import range from 'lodash/range'
 import { type FC } from 'react'
 
-type PostCardGridProps = {
-  posts?: Post[]
-  isLoading?: boolean
-}
+type PostCardGridProps = { posts?: Post[] } & (
+  | {
+      isLoading?: false
+      postUrl: (post: Post) => string
+    }
+  | {
+      isLoading: true
+      postUrl?: (post: Post) => string
+    }
+)
 
-export const PostCardGrid: FC<PostCardGridProps> = ({ posts, isLoading }) => {
+export const PostCardGrid: FC<PostCardGridProps> = ({
+  posts,
+  isLoading,
+  postUrl,
+}) => {
   return (
     <div className="flex">
       <div className="m-auto">
@@ -22,7 +32,7 @@ export const PostCardGrid: FC<PostCardGridProps> = ({ posts, isLoading }) => {
               ))
             : posts?.map((post) => (
                 <div key={post.id} className="w-[18rem]">
-                  <PostCard post={post} />
+                  <PostCard post={post} postUrl={postUrl(post)} />
                 </div>
               ))}
         </div>
