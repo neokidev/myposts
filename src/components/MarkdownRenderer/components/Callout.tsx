@@ -1,31 +1,18 @@
 import clsx from 'clsx'
 
 interface CalloutProps {
-  icon?: string
   children?: React.ReactNode
-  type?: 'default' | 'warning' | 'danger'
 }
 
-export function Callout({
-  children,
-  icon,
-  type = 'default',
-  ...props
-}: CalloutProps) {
+export function Callout({ children }: CalloutProps) {
   return (
     <div
       className={clsx(
-        'my-6 flex items-start rounded-md border border-l-4 p-4',
-        {
-          'border-slate-900 bg-slate-50': type === 'default',
-          'border-red-900 bg-red-50': type === 'danger',
-          'border-yellow-900 bg-yellow-50': type === 'warning',
-        }
+        'relative shadow-lg p-4 pl-6 rounded-md border',
+        'before:block before:absolute before:w-1.5 before:top-1 before:bottom-1 before:left-1 before:bg-black before:rounded-full'
       )}
-      {...props}
     >
-      {icon && <span className="mr-4 text-2xl">{icon}</span>}
-      <div>{children}</div>
+      {children}
     </div>
   )
 }
