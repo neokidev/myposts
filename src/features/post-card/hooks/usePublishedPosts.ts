@@ -6,6 +6,10 @@ type ApiResponse = (PrismaPost & {
   author: User
 })[]
 
+type UsePublishedPostsParams = {
+  authorId?: string
+}
+
 const transformer = (response: ApiResponse): Post[] => {
   return response.map((post) => ({
     id: post.id,
@@ -16,11 +20,12 @@ const transformer = (response: ApiResponse): Post[] => {
   }))
 }
 
-export const usePublishedPosts = () => {
+export const usePublishedPosts = (params?: UsePublishedPostsParams) => {
   return api.post.getPublishedPosts.useQuery(
     {
       page: 1,
       pageSize: 20,
+      authorId: params?.authorId,
     },
     {
       select: transformer,
