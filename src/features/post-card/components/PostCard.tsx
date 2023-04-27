@@ -10,9 +10,10 @@ dayjs.extend(relativeTime)
 export type PostCardProps = {
   post: Post
   postUrl: string
+  authorUrl: string
 }
 
-export const PostCard: FC<PostCardProps> = ({ post, postUrl }) => {
+export const PostCard: FC<PostCardProps> = ({ post, postUrl, authorUrl }) => {
   return (
     <article className="overflow-hidden rounded-lg border shadow-lg group">
       <Link href={postUrl} className="relative h-40 overflow-hidden block">
@@ -32,14 +33,14 @@ export const PostCard: FC<PostCardProps> = ({ post, postUrl }) => {
         <div className="flex items-center space-x-1.5">
           {post.authorImage && (
             <Link
-              href="#"
+              href={authorUrl}
               className="relative w-7 h-7 rounded-full overflow-hidden hover:opacity-75"
             >
               <Image alt="user-avatar" src={post.authorImage} fill />
             </Link>
           )}
           <Link
-            href="#"
+            href={authorUrl}
             className="inline text-sm no-underline hover:underline "
           >
             {post.authorName}

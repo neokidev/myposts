@@ -8,10 +8,12 @@ type PostCardGridProps = { posts?: Post[] } & (
   | {
       isLoading?: false
       postUrl: (post: Post) => string
+      authorUrl: (post: Post) => string
     }
   | {
       isLoading: true
       postUrl?: (post: Post) => string
+      authorUrl?: (post: Post) => string
     }
 )
 
@@ -19,6 +21,7 @@ export const PostCardGrid: FC<PostCardGridProps> = ({
   posts,
   isLoading,
   postUrl,
+  authorUrl,
 }) => {
   return (
     <div className="flex">
@@ -32,7 +35,11 @@ export const PostCardGrid: FC<PostCardGridProps> = ({
               ))
             : posts?.map((post) => (
                 <div key={post.id} className="w-[18rem]">
-                  <PostCard post={post} postUrl={postUrl(post)} />
+                  <PostCard
+                    post={post}
+                    postUrl={postUrl(post)}
+                    authorUrl={authorUrl(post)}
+                  />
                 </div>
               ))}
         </div>

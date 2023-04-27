@@ -8,6 +8,10 @@ const generatePostUrl = (post: Post) => {
   return `/posts/${post.id}`
 }
 
+const generateAuthorUrl = (post: Post) => {
+  return `/users/${post.authorName}`
+}
+
 const Home: NextPage = () => {
   const { data: posts, isLoading } = usePublishedPosts()
 
@@ -19,6 +23,7 @@ const Home: NextPage = () => {
           posts={posts}
           isLoading={isLoading}
           postUrl={generatePostUrl}
+          authorUrl={generateAuthorUrl}
         />
       </div>
     </MainLayout>
