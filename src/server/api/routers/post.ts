@@ -11,6 +11,9 @@ export const postRouter = createTRPCRouter({
     .input(z.object({ page: z.number().int(), pageSize: z.number().int() }))
     .query(({ ctx, input }) => {
       return ctx.prisma.post.findMany({
+        include: {
+          author: true,
+        },
         where: { published: true },
         orderBy: { createdAt: 'desc' },
         // skip: input.page * input.pageSize,

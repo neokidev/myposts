@@ -29,17 +29,15 @@ export const PostCard: FC<PostCardProps> = ({ post, postUrl }) => {
             {post.title}
           </h1>
         </Link>
-        <div className="flex items-center space-x-2">
-          <Link
-            href="#"
-            className="relative w-7 h-7 rounded-full overflow-hidden"
-          >
-            <Image
-              alt="Placeholder"
-              src="https://picsum.photos/32/32/?random"
-              fill
-            />
-          </Link>
+        <div className="flex items-center space-x-1.5">
+          {post.authorImage && (
+            <Link
+              href="#"
+              className="relative w-7 h-7 rounded-full overflow-hidden hover:opacity-75"
+            >
+              <Image alt="user-avatar" src={post.authorImage} fill />
+            </Link>
+          )}
           <Link
             href="#"
             className="inline text-sm no-underline hover:underline "
