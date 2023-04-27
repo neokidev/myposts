@@ -8,10 +8,19 @@ import { z } from 'zod'
 
 export const postRouter = createTRPCRouter({
   getPublishedPosts: publicProcedure
-    .input(z.object({ page: z.number().int(), pageSize: z.number().int() }))
+    .input(
+      z.object({
+        page: z.number().int(),
+        pageSize: z.number().int(),
+        authorId: z.string().optional(),
+      })
+    )
     .query(({ ctx, input }) => {
       return ctx.prisma.post.findMany({
-        where: { published: true },
+        include: {
+          author: true,
+        },
+        where: { published: true, authorId: input.authorId },
         orderBy: { createdAt: 'desc' },
         // skip: input.page * input.pageSize,
         // take: input.pageSize,
