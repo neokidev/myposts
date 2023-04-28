@@ -4,23 +4,6 @@ const backgroundColor = '#f3f3f3'
 const foregroundColor = '#ecebeb'
 const textRadius = '0.25rem'
 
-const imageSkeletonUniqueKey = 'ImageSkeleton'
-const ImageSkeleton = () => {
-  return (
-    <ContentLoader
-      uniqueKey={imageSkeletonUniqueKey}
-      speed={1}
-      width={10000}
-      height={160}
-      viewBox="0 0 10000 160"
-      backgroundColor={backgroundColor}
-      foregroundColor={foregroundColor}
-    >
-      <rect x="0" y="0" width="10000" height="160" />
-    </ContentLoader>
-  )
-}
-
 const titleSkeletonUniqueKey = 'TitleSkeleton'
 const TitleSkeleton = () => {
   return (
@@ -114,7 +97,7 @@ const CreatedAtSkeleton = () => {
 export const PostCardSkeleton = () => {
   return (
     <article className="overflow-hidden rounded-lg border shadow-lg group">
-      <ImageSkeleton />
+      <div className="h-40" style={{ backgroundColor }} />
       <div className="p-4 space-y-3">
         <TitleSkeleton />
         <div className="flex items-center no-underline hover:underline space-x-1.5">
