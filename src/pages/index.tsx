@@ -47,6 +47,7 @@ const Home: NextPage = () => {
           isLoading={isLoading}
           postUrl={generatePostUrl}
           authorUrl={generateAuthorUrl}
+          showAuthor
         />
       </div>
     </MainLayout>

@@ -6,23 +6,36 @@ import { type FC } from 'react'
 
 type PostCardGridProps = { posts?: Post[] } & (
   | {
-      isLoading?: false
-      postUrl: (post: Post) => string
-      authorUrl: (post: Post) => string
-    }
-  | {
       isLoading: true
       postUrl?: (post: Post) => string
-      authorUrl?: (post: Post) => string
     }
-)
+  | {
+      isLoading?: false
+      postUrl: (post: Post) => string
+    }
+) &
+  (
+    | {
+        showAuthor: true
+        authorUrl: (post: Post) => string
+      }
+    | {
+        showAuthor: false
+        authorUrl?: (post: Post) => string
+      }
+  )
 
 export const PostCardGrid: FC<PostCardGridProps> = ({
   posts,
   isLoading,
   postUrl,
   authorUrl,
+  showAuthor,
 }) => {
+  if (showAuthor && authorUrl === undefined) {
+    throw new Error('authorUrl is required if showAuthor is true')
+  }
+
   return (
     <div className="flex">
       <div className="m-auto">
@@ -35,11 +48,20 @@ export const PostCardGrid: FC<PostCardGridProps> = ({
               ))
             : posts?.map((post) => (
                 <div key={post.id} className="w-[18rem]">
-                  <PostCard
-                    post={post}
-                    postUrl={postUrl(post)}
-                    authorUrl={authorUrl(post)}
-                  />
+                  {showAuthor && authorUrl !== undefined ? (
+                    <PostCard
+                      post={post}
+                      postUrl={postUrl(post)}
+                      authorUrl={authorUrl(post)}
+                      showAuthor={true}
+                    />
+                  ) : (
+                    <PostCard
+                      post={post}
+                      postUrl={postUrl(post)}
+                      showAuthor={false}
+                    />
+                  )}
                 </div>
               ))}
         </div>
