@@ -2,8 +2,11 @@ import { MainLayout } from '@/components/Layout/components/MainLayout'
 import { PostCardGrid } from '@/features/post-card/components/PostCardGrid'
 import { usePublishedPosts } from '@/features/post-card/hooks/usePublishedPosts'
 import { type Post } from '@/features/post-card/types/post'
+import { appRouter } from '@/server/api/root'
 import { prisma } from '@/server/prisma'
+import { createServerSideHelpers } from '@trpc/react-query/server'
 import { type GetStaticPaths, type GetStaticProps, type NextPage } from 'next'
+import superjson from 'superjson'
 
 const generatePostUrl = (post: Post) => {
   return `/posts/${post.id}`
@@ -50,12 +53,26 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     return { notFound: true }
   }
 
+  const helpers = createServerSideHelpers({
+    router: appRouter,
+    ctx: { session: null, prisma },
+    transformer: superjson,
+  })
+
+  await helpers.post.getPublishedPosts.prefetch({
+    page: 1,
+    pageSize: 20,
+    authorId: user.id,
+  })
+
   return {
     props: {
+      trpcState: helpers.dehydrate(),
       user: {
         id: user.id,
         name: user.name,
       },
+      revalidate: 10,
     },
   }
 }
