@@ -1,4 +1,5 @@
 import { Callout } from '@/components/MarkdownRenderer/components/Callout'
+import { CodeBlock } from '@/components/MarkdownRenderer/components/CodeBlock'
 import clsx from 'clsx'
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { type FC } from 'react'
@@ -7,7 +8,7 @@ type MarkdownRendererProps = {
   content: MDXRemoteSerializeResult
 }
 
-type DefaultComponentProps = React.HTMLAttributes<HTMLElement>
+export type DefaultComponentProps = React.HTMLAttributes<HTMLElement>
 
 const components = {
   h1: ({ className, ...props }: DefaultComponentProps) => (
@@ -153,15 +154,7 @@ const components = {
       {...props}
     />
   ),
-  code: ({ className, ...props }: DefaultComponentProps) => (
-    <code
-      className={clsx(
-        'relative rounded border bg-gray-300/25 py-[0.2rem] px-[0.3rem] font-mono text-sm text-gray-600',
-        className
-      )}
-      {...props}
-    />
-  ),
+  code: CodeBlock,
   Callout,
 }
 
