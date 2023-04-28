@@ -6,20 +6,18 @@ import { appRouter } from '@/server/api/root'
 import { prisma } from '@/server/prisma'
 import { createServerSideHelpers } from '@trpc/react-query/server'
 import { type GetStaticPaths, type GetStaticProps, type NextPage } from 'next'
+import Image from 'next/image'
 import superjson from 'superjson'
 
 const generatePostUrl = (post: Post) => {
   return `/posts/${post.id}`
 }
 
-const generateAuthorUrl = (post: Post) => {
-  return `/users/${post.authorName}`
-}
-
 type Props = {
   user: {
     id: string
     name: string
+    image?: string
   }
 }
 
@@ -71,6 +69,7 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
       user: {
         id: user.id,
         name: user.name,
+        image: user.image ?? undefined,
       },
       revalidate: 10,
     },
@@ -102,12 +101,17 @@ const UserPage: NextPage<Props> = ({ user }) => {
   return (
     <MainLayout>
       <div className="flex flex-col items-center">
+        {user.image !== undefined && (
+          <div className="mb-4 relative w-28 h-28 rounded-full overflow-hidden">
+            <Image src={user.image} alt="user-avatar" fill />
+          </div>
+        )}
         <h1 className="text-4xl font-extrabold mb-6">{`${user.name}'s Posts`}</h1>
         <PostCardGrid
           posts={posts}
           isLoading={isLoading}
           postUrl={generatePostUrl}
-          authorUrl={generateAuthorUrl}
+          showAuthor={false}
         />
       </div>
     </MainLayout>
