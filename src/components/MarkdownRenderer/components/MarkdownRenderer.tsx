@@ -120,7 +120,7 @@ const components = {
   tr: ({ className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) => (
     <tr
       className={clsx(
-        'm-0 border-t border-gray-300 p-0 even:bg-gray-100',
+        'm-0 border-t border-gray-300 p-0 odd:bg-gray-100 even:bg-white',
         className
       )}
       {...props}
@@ -129,7 +129,7 @@ const components = {
   th: ({ className, ...props }: DefaultComponentProps) => (
     <th
       className={clsx(
-        'border border-gray-200 px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right',
+        'border border-gray-200 px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right bg-white',
         className
       )}
       {...props}
