@@ -1,5 +1,7 @@
+import { MarkdocRenderer } from '@/components/MarkdownRenderer'
 import { SubmitButton } from '@/features/edit-post/components/SubmitButton'
 import { zodResolver } from '@hookform/resolvers/zod'
+import clsx from 'clsx'
 import Link from 'next/link'
 import { useRef, useState, type FC } from 'react'
 import {
@@ -19,6 +21,8 @@ export type EditPostValues = FormValues & {
   published: boolean
 }
 
+type Mode = 'edit' | 'preview'
+
 const schema = z.object({
   title: z.string().min(1, { message: "Title can't be blank." }),
   content: z.string(),
@@ -26,17 +30,55 @@ const schema = z.object({
 
 const notify = () => toast.error("Title can't be blank")
 
+type PreviewAreaProps = {
+  title: string
+  content: string
+}
+
 type EditPostProps = {
   backUrl: string
   onSubmit?: (values: EditPostValues) => void | Promise<void>
+}
+
+const PreviewArea: FC<PreviewAreaProps> = ({ title, content }) => {
+  // const [serializedContent, setSerializedContent] =
+  //   useState<MDXRemoteSerializeResult>()
+  //
+  // console.log('content:', content)
+  //
+  // useEffect(() => {
+  //   serialize(content, {
+  //     mdxOptions: {
+  //       remarkPlugins: [remarkGfm],
+  //       rehypePlugins: [rehypePrism],
+  //     },
+  //   })
+  //     .then(setSerializedContent)
+  //     .catch(() => {
+  //       throw new Error('Failed to serialize content.')
+  //     })
+  // }, [content])
+
+  return (
+    <>
+      <h1 className="mb-4 inline-block text-4xl font-extrabold leading-tight text-slate-900 lg:text-5xl">
+        {title}
+      </h1>
+      <MarkdocRenderer content={content} />
+    </>
+  )
 }
 
 export const EditPost: FC<EditPostProps> = ({ backUrl, onSubmit }) => {
   const [published, setPublished] = useState(true)
   const [submitting, setSubmitting] = useState(false)
   const contentRef = useRef<HTMLTextAreaElement | null>(null)
+  const [mode, setMode] = useState<Mode>('edit')
 
-  const { register, handleSubmit } = useForm<FormValues>({
+  const handleEdit = () => setMode('edit')
+  const handlePreview = () => setMode('preview')
+
+  const { register, handleSubmit, getValues } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       title: '',
@@ -91,7 +133,27 @@ export const EditPost: FC<EditPostProps> = ({ backUrl, onSubmit }) => {
                 </Link>
               </div>
               <div className="flex items-center justify-center"></div>
-              <div className="flex items-center justify-end">
+              <div className="flex items-center justify-end space-x-12">
+                <div>
+                  <button
+                    className={clsx(
+                      'px-3 py-1.5 rounded-md hover:bg-gray-200',
+                      mode === 'preview' && 'text-gray-400 hover:text-gray-500'
+                    )}
+                    onClick={handleEdit}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className={clsx(
+                      'px-3 py-1.5 rounded-md hover:bg-gray-200',
+                      mode === 'edit' && 'text-gray-400 hover:text-gray-500'
+                    )}
+                    onClick={handlePreview}
+                  >
+                    Preview
+                  </button>
+                </div>
                 <div className="flex rounded-md shadow-sm">
                   <SubmitButton
                     disabled={submitting}
@@ -104,28 +166,40 @@ export const EditPost: FC<EditPostProps> = ({ backUrl, onSubmit }) => {
           </header>
           <div className="flex-1 container pt-2 pb-8">
             <div className="rounded-lg border shadow-xl bg-white">
-              <div className="flex flex-col px-12">
-                <div className="px-4 py-8">
-                  <input
-                    className="block w-full rounded-md ring-0 outline-none text-5xl font-bold"
-                    placeholder="Post title here..."
-                    {...register('title')}
-                  />
+              {mode === 'edit' && (
+                <div className="flex flex-col px-12">
+                  <div className="px-4 py-8">
+                    <input
+                      className="block w-full rounded-md ring-0 outline-none text-5xl font-bold"
+                      placeholder="Post title here..."
+                      {...register('title')}
+                    />
+                  </div>
+                  <hr />
+                  <div className="flex-1 px-4 py-8">
+                    <textarea
+                      className="w-full resize-none rounded-md outline-none ring-0 font-mono h-auto min-h-[20rem] overflow-hidden"
+                      placeholder="Post content here..."
+                      onInput={autoResizeTextarea}
+                      {...rest}
+                      ref={(e) => {
+                        ref(e)
+                        contentRef.current = e
+                      }}
+                    />
+                  </div>
                 </div>
-                <hr />
-                <div className="flex-1 px-4 py-8">
-                  <textarea
-                    className="w-full resize-none rounded-md outline-none ring-0 font-mono h-auto min-h-[20rem] overflow-hidden"
-                    placeholder="Post content here..."
-                    onInput={autoResizeTextarea}
-                    {...rest}
-                    ref={(e) => {
-                      ref(e)
-                      contentRef.current = e
-                    }}
-                  />
+              )}
+              {mode === 'preview' && (
+                <div className="flex flex-col px-12">
+                  <div className="px-4 py-8">
+                    <PreviewArea
+                      title={getValues('title')}
+                      content={getValues('content')}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>

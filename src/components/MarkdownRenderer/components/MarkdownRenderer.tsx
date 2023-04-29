@@ -9,7 +9,7 @@ type MarkdownRendererProps = {
 
 export type DefaultComponentProps = React.HTMLAttributes<HTMLElement>
 
-const components = {
+export const components = {
   h1: ({ className, ...props }: DefaultComponentProps) => (
     <h1
       className={clsx(
