@@ -1,5 +1,4 @@
 import { Callout } from '@/components/MarkdownRenderer/components/Callout'
-import { CodeBlock } from '@/components/MarkdownRenderer/components/CodeBlock'
 import clsx from 'clsx'
 import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { type FC } from 'react'
@@ -154,7 +153,16 @@ const components = {
       {...props}
     />
   ),
-  code: CodeBlock,
+  code: ({ className, ...props }: DefaultComponentProps) => (
+    <code
+      style={{ fontSize: '85%' }}
+      className={clsx(
+        'relative rounded-md bg-gray-300/25 px-1.5 py-1 font-mono text-gray-600',
+        className
+      )}
+      {...props}
+    />
+  ),
   Callout,
 }
 
