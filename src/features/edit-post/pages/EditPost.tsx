@@ -1,4 +1,4 @@
-import { MarkdocRenderer } from '@/components/MarkdownRenderer'
+import { MarkdownRenderer } from '@/components/MarkdownRenderer'
 import { SubmitButton } from '@/features/edit-post/components/SubmitButton'
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
@@ -47,7 +47,7 @@ const PreviewArea: FC<PreviewAreaProps> = ({ title, content }) => {
       <h1 className="mb-4 inline-block text-4xl font-extrabold leading-tight text-slate-900 lg:text-5xl">
         {title}
       </h1>
-      <MarkdocRenderer content={content} />
+      <MarkdownRenderer content={content} />
     </>
   )
 }
