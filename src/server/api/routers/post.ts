@@ -60,6 +60,46 @@ export const postRouter = createTRPCRouter({
       })
     }),
 
+  updatePost: protectedProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+        title: z.string().min(1),
+        content: z.string(),
+        published: z.boolean(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const post = await ctx.prisma.post.findUnique({
+        where: { id: input.id },
+        select: { authorId: true },
+      })
+
+      if (post === null) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Failed to update. Post not found.',
+        })
+      }
+
+      if (post.authorId !== ctx.session.user.id) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message:
+            'Failed to update. You do not have permission to update this post.',
+        })
+      }
+
+      return ctx.prisma.post.update({
+        where: { id: input.id },
+        data: {
+          title: input.title,
+          content: input.content,
+          published: input.published,
+        },
+      })
+    }),
+
   deletePost: protectedProcedure
     .input(z.object({ postId: z.string().cuid() }))
     .mutation(async ({ ctx, input }) => {

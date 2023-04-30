@@ -38,6 +38,7 @@ type PreviewAreaProps = {
 type EditPostProps = {
   backUrl: string
   onSubmit?: (values: EditPostValues) => void | Promise<void>
+  initialValues?: EditPostValues
 }
 
 const PreviewArea: FC<PreviewAreaProps> = ({ title, content }) => {
@@ -51,8 +52,12 @@ const PreviewArea: FC<PreviewAreaProps> = ({ title, content }) => {
   )
 }
 
-export const EditPost: FC<EditPostProps> = ({ backUrl, onSubmit }) => {
-  const [published, setPublished] = useState(true)
+export const EditPost: FC<EditPostProps> = ({
+  backUrl,
+  onSubmit,
+  initialValues,
+}) => {
+  const [published, setPublished] = useState(initialValues?.published ?? true)
   const [submitting, setSubmitting] = useState(false)
   const contentRef = useRef<HTMLTextAreaElement | null>(null)
   const [mode, setMode] = useState<Mode>('edit')
@@ -63,8 +68,8 @@ export const EditPost: FC<EditPostProps> = ({ backUrl, onSubmit }) => {
   const { register, handleSubmit, getValues } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      title: '',
-      content: '',
+      title: initialValues?.title ?? '',
+      content: initialValues?.content ?? '',
     },
   })
 
