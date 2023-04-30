@@ -1,9 +1,13 @@
 import { Header } from '@/components/Layout/components/Header'
+import { ProtectedLayout } from '@/components/Layout/components/ProtectedLayout'
 import clsx from 'clsx'
-import { useSession } from 'next-auth/react'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { useEffect, useState, type FC, type ReactNode } from 'react'
+import { useState, type FC, type ReactNode } from 'react'
+
+type InnerMainLayoutProps = {
+  children: ReactNode
+  className?: string
+}
 
 type MainLayoutProps = {
   children: ReactNode
@@ -11,27 +15,7 @@ type MainLayoutProps = {
   isProtected?: boolean
 }
 
-export const MainLayout: FC<MainLayoutProps> = ({
-  children,
-  className,
-  isProtected,
-}) => {
-  const [_isProtected] = useState(isProtected)
-  const { status } = useSession()
-  const router = useRouter()
-
-  useEffect(() => {
-    if (_isProtected && status === 'unauthenticated') {
-      router.push('/').catch(() => {
-        throw new Error()
-      })
-    }
-  }, [_isProtected, status, router])
-
-  if (_isProtected && status !== 'authenticated') {
-    return null
-  }
-
+const InnerMainLayout: FC<InnerMainLayoutProps> = ({ children, className }) => {
   return (
     <>
       <Head>
@@ -43,6 +27,26 @@ export const MainLayout: FC<MainLayoutProps> = ({
         <Header />
         <main className={clsx(className, 'container flex-1')}>{children}</main>
       </div>
+    </>
+  )
+}
+
+export const MainLayout: FC<MainLayoutProps> = ({
+  children,
+  className,
+  isProtected,
+}) => {
+  const [_isProtected] = useState(isProtected)
+
+  return (
+    <>
+      {_isProtected ? (
+        <ProtectedLayout>
+          <InnerMainLayout className={className}>{children}</InnerMainLayout>
+        </ProtectedLayout>
+      ) : (
+        <InnerMainLayout className={className}>{children}</InnerMainLayout>
+      )}
     </>
   )
 }

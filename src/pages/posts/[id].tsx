@@ -1,16 +1,12 @@
 import { MainLayout } from '@/components/Layout'
-import { MarkdownRenderer } from '@/components/MarkdownRenderer/components/MarkdownRenderer'
+import { MarkdownRenderer } from '@/components/MarkdownRenderer'
 import { prisma } from '@/server/prisma'
 import { type GetStaticPaths, type GetStaticProps, type NextPage } from 'next'
-import { type MDXRemoteSerializeResult } from 'next-mdx-remote'
-import { serialize } from 'next-mdx-remote/serialize'
-import rehypePrism from 'rehype-prism-plus'
-import remarkGfm from 'remark-gfm'
 
 type Props = {
   post: {
     title: string
-    serializedContent?: MDXRemoteSerializeResult
+    content: string
   }
 }
 
@@ -34,21 +30,11 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     return { notFound: true }
   }
 
-  const serializedContent =
-    post.content !== null
-      ? await serialize(post.content, {
-          mdxOptions: {
-            remarkPlugins: [remarkGfm],
-            rehypePlugins: [rehypePrism],
-          },
-        })
-      : undefined
-
   return {
     props: {
       post: {
         title: post.title,
-        serializedContent,
+        content: post.content ?? '',
       },
     },
   }
@@ -78,9 +64,7 @@ const PostPage: NextPage<Props> = ({ post }) => {
       <h1 className="mb-4 inline-block text-4xl font-extrabold leading-tight text-slate-900 lg:text-5xl">
         {post.title}
       </h1>
-      {post.serializedContent !== undefined && (
-        <MarkdownRenderer content={post.serializedContent} />
-      )}
+      <MarkdownRenderer content={post.content} />
     </MainLayout>
   )
 }

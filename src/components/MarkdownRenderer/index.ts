@@ -1,1 +1,1 @@
-export * from '@/components/MarkdownRenderer/components/MarkdownRenderer'
+export * from './components/MarkdownRenderer'

@@ -1,171 +1,36 @@
-import { Callout } from '@/components/MarkdownRenderer/components/Callout'
+import { renderMarkdownContent } from '@/utils/markdoc'
 import clsx from 'clsx'
-import { MDXRemote, type MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { type FC } from 'react'
 
-type MarkdownRendererProps = {
-  content: MDXRemoteSerializeResult
+type Props = {
+  content: string
 }
 
-export type DefaultComponentProps = React.HTMLAttributes<HTMLElement>
-
-const components = {
-  h1: ({ className, ...props }: DefaultComponentProps) => (
-    <h1
+export const MarkdownRenderer: FC<Props> = ({ content }) => {
+  return (
+    <div
       className={clsx(
-        'mt-2 scroll-m-20 text-4xl font-bold tracking-tight',
-        className
+        'prose-h1:mt-2 prose-h1:scroll-m-20 prose-h1:text-4xl prose-h1:font-bold prose-h1:tracking-tight',
+        'prose-h2:mt-10 prose-h2:scroll-m-20 prose-h2:border-b prose-h2:border-b-gray-200 prose-h2:pb-1 prose-h2:text-3xl prose-h2:font-bold prose-h2:tracking-tight prose-h2:first:mt-0',
+        'prose-h3:mt-8 prose-h3:scroll-m-20 prose-h3:text-2xl prose-h3:font-semibold prose-h3:tracking-tight',
+        'prose-h4:mt-8 prose-h4:scroll-m-20 prose-h4:text-xl prose-h4:font-semibold prose-h4:tracking-tight',
+        'prose-a:font-medium prose-a:text-gray-900 prose-a:underline prose-a:underline-offset-4',
+        'prose-p:leading-7 prose-p:[&:not(:first-child)]:mt-6',
+        'prose-ul:my-6 prose-ul:ml-6 prose-ul:list-disc',
+        'prose-ol:my-6 prose-ol:ml-6 prose-ol:list-decimal',
+        'prose-li:mt-2',
+        'prose-blockquote:mt-6 prose-blockquote:border-l-2 prose-blockquote:border-gray-300 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-800 prose-blockquote:[&>*]:text-gray-600 prose-blockquote:font-normal',
+        'prose-img:rounded-md prose-img:border prose-img:border-gray-200',
+        'prose-hr:my-4 prose-hr:border-gray-200 prose-hr:md:my-8',
+        'prose-table:my-6 prose-table:w-full prose-table:overflow-y-auto',
+        'prose-tr:m-0 prose-tr:border-t prose-tr:border-gray-300 prose-tr:p-0 prose-tr:odd:bg-gray-100 prose-tr:even:bg-white',
+        'prose-th:border prose-th:border-gray-200 prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:[&[align=center]]:text-center prose-th:[&[align=right]]:text-right prose-th:bg-white',
+        'prose-td:border prose-td:border-gray-200 prose-td:px-4 prose-td:py-2 prose-td:text-left prose-td:[&[align=center]]:text-center prose-td:[&[align=right]]:text-right',
+        'prose-pre:mt-6 prose-pre:mb-4 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-pre:bg-gray-900 prose-pre:p-4',
+        'prose-code:relative prose-code:rounded-md prose-code:bg-gray-300/25 prose-code:px-1.5 prose-code:py-1 prose-code:font-mono prose-code:text-gray-600 prose-code:text-[85%]'
       )}
-      {...props}
-    />
-  ),
-  h2: ({ className, ...props }: DefaultComponentProps) => (
-    <h2
-      className={clsx(
-        'mt-10 scroll-m-20 border-b border-b-gray-200 pb-1 text-3xl font-semibold tracking-tight first:mt-0',
-        className
-      )}
-      {...props}
-    />
-  ),
-  h3: ({ className, ...props }: DefaultComponentProps) => (
-    <h3
-      className={clsx(
-        'mt-8 scroll-m-20 text-2xl font-semibold tracking-tight',
-        className
-      )}
-      {...props}
-    />
-  ),
-  h4: ({ className, ...props }: DefaultComponentProps) => (
-    <h4
-      className={clsx(
-        'mt-8 scroll-m-20 text-xl font-semibold tracking-tight',
-        className
-      )}
-      {...props}
-    />
-  ),
-  h5: ({ className, ...props }: DefaultComponentProps) => (
-    <h5
-      className={clsx(
-        'mt-8 scroll-m-20 text-lg font-semibold tracking-tight',
-        className
-      )}
-      {...props}
-    />
-  ),
-  h6: ({ className, ...props }: DefaultComponentProps) => (
-    <h6
-      className={clsx(
-        'mt-8 scroll-m-20 text-base font-semibold tracking-tight',
-        className
-      )}
-      {...props}
-    />
-  ),
-  a: ({ className, ...props }: DefaultComponentProps) => (
-    <a
-      className={clsx(
-        'font-medium text-gray-900 underline underline-offset-4',
-        className
-      )}
-      {...props}
-    />
-  ),
-  p: ({ className, ...props }: DefaultComponentProps) => (
-    <p
-      className={clsx('leading-7 [&:not(:first-child)]:mt-6', className)}
-      {...props}
-    />
-  ),
-  ul: ({ className, ...props }: DefaultComponentProps) => (
-    <ul className={clsx('my-6 ml-6 list-disc', className)} {...props} />
-  ),
-  ol: ({ className, ...props }: DefaultComponentProps) => (
-    <ol className={clsx('my-6 ml-6 list-decimal', className)} {...props} />
-  ),
-  li: ({ className, ...props }: DefaultComponentProps) => (
-    <li className={clsx('mt-2', className)} {...props} />
-  ),
-  blockquote: ({ className, ...props }: DefaultComponentProps) => (
-    <blockquote
-      className={clsx(
-        'mt-6 border-l-2 border-gray-300 pl-6 italic text-gray-800 [&>*]:text-gray-600',
-        className
-      )}
-      {...props}
-    />
-  ),
-  img: ({
-    className,
-    alt,
-    ...props
-  }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      className={clsx('rounded-md border border-gray-200', className)}
-      alt={alt}
-      {...props}
-    />
-  ),
-  hr: ({ ...props }) => (
-    <hr className="my-4 border-gray-200 md:my-8" {...props} />
-  ),
-  table: ({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) => (
-    <div className="my-6 w-full overflow-y-auto">
-      <table className={clsx('w-full', className)} {...props} />
+    >
+      {renderMarkdownContent(content)}
     </div>
-  ),
-  tr: ({ className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) => (
-    <tr
-      className={clsx(
-        'm-0 border-t border-gray-300 p-0 odd:bg-gray-100 even:bg-white',
-        className
-      )}
-      {...props}
-    />
-  ),
-  th: ({ className, ...props }: DefaultComponentProps) => (
-    <th
-      className={clsx(
-        'border border-gray-200 px-4 py-2 text-left font-bold [&[align=center]]:text-center [&[align=right]]:text-right bg-white',
-        className
-      )}
-      {...props}
-    />
-  ),
-  td: ({ className, ...props }: DefaultComponentProps) => (
-    <td
-      className={clsx(
-        'border border-gray-200 px-4 py-2 text-left [&[align=center]]:text-center [&[align=right]]:text-right',
-        className
-      )}
-      {...props}
-    />
-  ),
-  pre: ({ className, ...props }: DefaultComponentProps) => (
-    <pre
-      className={clsx(
-        'mt-6 mb-4 overflow-x-auto rounded-lg bg-gray-900 py-4',
-        className
-      )}
-      {...props}
-    />
-  ),
-  code: ({ className, ...props }: DefaultComponentProps) => (
-    <code
-      style={{ fontSize: '85%' }}
-      className={clsx(
-        'relative rounded-md bg-gray-300/25 px-1.5 py-1 font-mono text-gray-600',
-        className
-      )}
-      {...props}
-    />
-  ),
-  Callout,
-}
-
-export const MarkdownRenderer: FC<MarkdownRendererProps> = ({ content }) => {
-  return <MDXRemote {...content} components={components} />
+  )
 }
