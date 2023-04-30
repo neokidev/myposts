@@ -123,6 +123,7 @@ export const EditPost: FC<EditPostProps> = ({
               <div className="flex items-center justify-end space-x-12">
                 <div>
                   <button
+                    type="button"
                     className={clsx(
                       'px-3 py-1.5 rounded-md hover:bg-gray-200',
                       mode === 'preview' && 'text-gray-400 hover:text-gray-500'
@@ -132,6 +133,7 @@ export const EditPost: FC<EditPostProps> = ({
                     Edit
                   </button>
                   <button
+                    type="button"
                     className={clsx(
                       'px-3 py-1.5 rounded-md hover:bg-gray-200',
                       mode === 'edit' && 'text-gray-400 hover:text-gray-500'
