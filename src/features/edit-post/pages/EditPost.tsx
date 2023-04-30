@@ -102,8 +102,8 @@ export const EditPost: FC<EditPostProps> = ({
       {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
       <form onSubmit={handleSubmit(_onSubmit, onError)}>
         <div className="flex flex-col bg-gray-50 min-h-screen">
-          <header className="h-16 container">
-            <div className="mx-auto grid h-full w-full grid-cols-3 items-center">
+          <header className="sticky top-0 z-10 h-16 backdrop-blur bg-gray-50/50">
+            <div className="container mx-auto grid h-full w-full grid-cols-3 items-center">
               <div className="flex items-center justify-start">
                 <Link
                   className="group flex text-sm font-medium leading-6 text-slate-500 hover:text-slate-600"
