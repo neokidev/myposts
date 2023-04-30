@@ -41,24 +41,6 @@ type EditPostProps = {
 }
 
 const PreviewArea: FC<PreviewAreaProps> = ({ title, content }) => {
-  // const [serializedContent, setSerializedContent] =
-  //   useState<MDXRemoteSerializeResult>()
-  //
-  // console.log('content:', content)
-  //
-  // useEffect(() => {
-  //   serialize(content, {
-  //     mdxOptions: {
-  //       remarkPlugins: [remarkGfm],
-  //       rehypePlugins: [rehypePrism],
-  //     },
-  //   })
-  //     .then(setSerializedContent)
-  //     .catch(() => {
-  //       throw new Error('Failed to serialize content.')
-  //     })
-  // }, [content])
-
   return (
     <>
       <h1 className="mb-4 inline-block text-4xl font-extrabold leading-tight text-slate-900 lg:text-5xl">
