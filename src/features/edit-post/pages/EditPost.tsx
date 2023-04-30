@@ -3,7 +3,7 @@ import { SubmitButton } from '@/features/edit-post/components/SubmitButton'
 import { zodResolver } from '@hookform/resolvers/zod'
 import clsx from 'clsx'
 import Link from 'next/link'
-import { useRef, useState, type FC } from 'react'
+import { useEffect, useRef, useState, type FC } from 'react'
 import {
   useForm,
   type SubmitErrorHandler,
@@ -90,6 +90,12 @@ export const EditPost: FC<EditPostProps> = ({
       textarea.style.height = `${textarea.scrollHeight}px`
     }
   }
+
+  useEffect(() => {
+    if (mode === 'edit') {
+      autoResizeTextarea()
+    }
+  }, [mode])
 
   return (
     <>
