@@ -157,9 +157,9 @@ export const EditPost: FC<EditPostProps> = ({
             <div className="rounded-lg border shadow-xl bg-white">
               {mode === 'edit' && (
                 <div className="flex flex-col px-12">
-                  <div className="px-4 py-8">
+                  <div className="px-4 py-7">
                     <input
-                      className="block w-full rounded-md ring-0 outline-none text-5xl font-bold"
+                      className="block w-full rounded-md ring-0 outline-none text-5xl font-extrabold"
                       placeholder="Post title here..."
                       {...register('title')}
                     />
