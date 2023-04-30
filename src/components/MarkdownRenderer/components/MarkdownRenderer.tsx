@@ -26,7 +26,7 @@ export const MarkdownRenderer: FC<Props> = ({ content }) => {
         'prose-tr:m-0 prose-tr:border-t prose-tr:border-gray-300 prose-tr:p-0 prose-tr:odd:bg-gray-100 prose-tr:even:bg-white',
         'prose-th:border prose-th:border-gray-200 prose-th:px-4 prose-th:py-2 prose-th:text-left prose-th:[&[align=center]]:text-center prose-th:[&[align=right]]:text-right prose-th:bg-white',
         'prose-td:border prose-td:border-gray-200 prose-td:px-4 prose-td:py-2 prose-td:text-left prose-td:[&[align=center]]:text-center prose-td:[&[align=right]]:text-right',
-        'prose-pre:mt-6 prose-pre:mb-4 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-pre:bg-gray-900 prose-pre:py-4',
+        'prose-pre:mt-6 prose-pre:mb-4 prose-pre:overflow-x-auto prose-pre:rounded-lg prose-pre:bg-gray-900 prose-pre:p-4',
         'prose-code:relative prose-code:rounded-md prose-code:bg-gray-300/25 prose-code:px-1.5 prose-code:py-1 prose-code:font-mono prose-code:text-gray-600 prose-code:text-[85%]'
       )}
     >

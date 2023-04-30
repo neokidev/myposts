@@ -1,7 +1,7 @@
 import { Callout } from '@/components/MarkdownRenderer/components/Callout'
 import Markdoc, { type Config } from '@markdoc/markdoc'
 import clsx from 'clsx'
-import { Highlight, themes } from 'prism-react-renderer'
+import { Highlight } from 'prism-react-renderer'
 import React, { Fragment, type FC, type ReactNode } from 'react'
 
 type FenceProps = {
@@ -13,18 +13,18 @@ export const Fence: FC<FenceProps> = ({ children, language }) => (
   <Highlight
     code={children === undefined ? '' : String(children).trimEnd()}
     language={language}
-    theme={themes.dracula}
   >
-    {({ className, style, tokens, getTokenProps }) => (
-      <pre className={clsx(className, 'not-prose')} style={style}>
+    {({ className, tokens, getTokenProps }) => (
+      <pre className={clsx(className, 'not-prose')}>
         <code className="text-[90%]">
           {tokens.map((line, lineIndex) => (
             <Fragment key={lineIndex}>
               {line
                 .filter((token) => !token.empty)
-                .map((token, tokenIndex) => (
-                  <span key={tokenIndex} {...getTokenProps({ token })} />
-                ))}
+                .map((token, tokenIndex) => {
+                  const { style: _, ...rest } = getTokenProps({ token })
+                  return <span key={tokenIndex} {...rest} />
+                })}
               {'\n'}
             </Fragment>
           ))}
