@@ -1,72 +1,104 @@
-import { cleanup, render, screen } from '@testing-library/react'
+import { composeStories } from '@storybook/react'
+import { cleanup, getByRole, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, expect, test, vi } from 'vitest'
-import { SubmitButton } from './SubmitButton'
+import { afterEach, expect, test } from 'vitest'
+import * as stories from './SubmitButton.stories'
 
 const user = userEvent.setup()
 
 afterEach(cleanup)
 
-test('use property to control whether to publish or draft', () => {
-  const { rerender } = render(<SubmitButton published />)
+const { Default, OpenMenu, OpenMenuDraftMode, Disabled } =
+  composeStories(stories)
 
-  const saveButton = screen.getByTestId('save-button')
-  expect(saveButton.textContent).toEqual('Publish')
+test('switch from publish to draft with selecting menu item', async () => {
+  const { container } = render(<OpenMenu />)
+  await OpenMenu.play({ canvasElement: container })
 
-  rerender(<SubmitButton published={false} />)
-  expect(saveButton.textContent).toEqual('Draft')
+  expect(screen.getByRole('button', { name: 'Publish' })).toBeTruthy()
+
+  const menuItems = screen.getAllByRole('menuitem')
+  expect(menuItems).toHaveLength(2)
+
+  const draftMenuItem = menuItems[1] as HTMLElement
+  const draftMenuButton = getByRole(draftMenuItem, 'button')
+
+  await user.click(draftMenuButton)
+
+  expect(screen.getByRole('button', { name: 'Draft' })).toBeTruthy()
 })
 
-test('toggle between publish and draft in the menu', async () => {
-  // ARRANGE
-  render(<SubmitButton published />)
+test('switch from draft to publish with selecting menu item', async () => {
+  const { container } = render(<OpenMenuDraftMode />)
+  await OpenMenu.play({ canvasElement: container })
 
-  const saveButton = screen.getByTestId('save-button')
-  const menuButton = screen.getByTestId('menu-button')
+  expect(screen.getByRole('button', { name: 'Draft' })).toBeTruthy()
 
-  expect(saveButton.textContent).toEqual('Publish')
+  const menuItems = screen.getAllByRole('menuitem')
+  expect(menuItems).toHaveLength(2)
 
-  await user.click(menuButton)
-  screen.getByTestId('check-icon-publish')
+  const publishMenuItem = menuItems[0] as HTMLElement
+  const publishMenuButton = getByRole(publishMenuItem, 'button')
 
-  await user.click(screen.getByTestId('menu-item-draft'))
-  expect(saveButton.textContent).toEqual('Draft')
+  await user.click(publishMenuButton)
 
-  await user.click(menuButton)
-  screen.getByTestId('check-icon-draft')
-
-  await user.click(screen.getByTestId('menu-item-publish'))
-  expect(saveButton.textContent).toEqual('Publish')
-
-  await user.click(menuButton)
-  screen.getByTestId('check-icon-publish')
+  expect(screen.getByRole('button', { name: 'Publish' })).toBeTruthy()
 })
 
-test('execute any function when selecting the menu item', async () => {
-  const mockFn = vi.fn()
-  render(<SubmitButton published onChangePublished={mockFn} />)
+test('switch from publish to draft with publish property', () => {
+  const { rerender } = render(<Default published />)
+  const publishButton = screen.getByRole('button', { name: 'Publish' })
+  expect(publishButton).toBeTruthy()
 
-  const menuButton = screen.getByTestId('menu-button')
+  rerender(<Default published={false} />)
 
-  expect(mockFn).toBeCalledTimes(0)
+  const draftButton = screen.getByRole('button', { name: 'Draft' })
+  expect(draftButton).toBeTruthy()
+})
 
-  await user.click(menuButton)
-  await user.click(screen.getByTestId('menu-item-draft'))
+test('switch from draft to publish with publish property', () => {
+  const { rerender } = render(<Default published={false} />)
+  const draftButton = screen.getByRole('button', { name: 'Draft' })
+  expect(draftButton).toBeTruthy()
 
-  expect(mockFn).toBeCalledTimes(1)
+  rerender(<Default published />)
 
-  await user.click(menuButton)
-  await user.click(screen.getByTestId('menu-item-draft'))
+  const publishButton = screen.getByRole('button', { name: 'Publish' })
+  expect(publishButton).toBeTruthy()
+})
 
-  expect(mockFn).toBeCalledTimes(1)
+test('execute onChangePublished property function when selecting the menu item', async () => {
+  let published = true
+  const handleChangePublished = (p: boolean) => {
+    published = p
+  }
+
+  const { container } = render(
+    <OpenMenu onChangePublished={handleChangePublished} />
+  )
+  await OpenMenu.play({ canvasElement: container })
+
+  const menuItems = screen.getAllByRole('menuitem')
+  expect(menuItems).toHaveLength(2)
+
+  const draftMenuItem = menuItems[1] as HTMLElement
+  const draftMenuButton = getByRole(draftMenuItem, 'button')
+
+  expect(published).toBeTruthy()
+
+  await user.click(draftMenuButton)
+
+  expect(published).toBeFalsy()
 })
 
 test('button is disabled', () => {
-  render(<SubmitButton disabled />)
+  render(<Disabled />)
 
-  const saveButton = screen.getByTestId('save-button')
-  const menuOpenButton = screen.getByTestId('menu-button')
+  const submitButton = screen.getByRole('button', {
+    name: 'Publish',
+  })
+  const expandMenuButton = screen.getByRole('button', { name: '' })
 
-  expect((saveButton as HTMLButtonElement).disabled).toBeTruthy()
-  expect((menuOpenButton as HTMLButtonElement).disabled).toBeTruthy()
+  expect((submitButton as HTMLButtonElement).disabled).toBeTruthy()
+  expect((expandMenuButton as HTMLButtonElement).disabled).toBeTruthy()
 })
