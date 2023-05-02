@@ -31,18 +31,16 @@ type ContentProps = {
 
 const Content: FC<ContentProps> = ({ children, className, align }) => {
   return (
-    <DropdownMenuPrimitive.Portal>
-      <DropdownMenuPrimitive.Content
-        className={clsx(
-          'min-w-[220px] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 text-sm',
-          className
-        )}
-        sideOffset={8}
-        align={align}
-      >
-        {children}
-      </DropdownMenuPrimitive.Content>
-    </DropdownMenuPrimitive.Portal>
+    <DropdownMenuPrimitive.Content
+      className={clsx(
+        'min-w-[12rem] rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none divide-y divide-gray-100 text-sm',
+        className
+      )}
+      sideOffset={8}
+      align={align}
+    >
+      {children}
+    </DropdownMenuPrimitive.Content>
   )
 }
 
