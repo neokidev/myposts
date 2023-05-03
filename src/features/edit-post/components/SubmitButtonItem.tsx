@@ -1,11 +1,9 @@
-import clsx from 'clsx'
 import { type FC, type MouseEventHandler } from 'react'
 import { CheckIcon } from './CheckIcon'
 
 type SubmitButtonItemProps = {
   label: string
   description: string
-  active: boolean
   selected: boolean
   onClick: MouseEventHandler<HTMLButtonElement>
 }
@@ -13,35 +11,25 @@ type SubmitButtonItemProps = {
 export const SubmitButtonItem: FC<SubmitButtonItemProps> = ({
   label,
   description,
-  active,
   selected,
   onClick,
 }) => {
   return (
     <button
       type="button"
-      className={clsx(
-        'group flex w-full p-3 text-start',
-        active && 'bg-blue-500'
-      )}
+      className="group flex w-full p-3 text-start hover:bg-blue-500"
       onClick={onClick}
     >
-      <div className="w-5">{selected && <CheckIcon active={active} />}</div>
+      <div className="w-5">
+        {selected && (
+          <CheckIcon className="stroke-blue-500 group-hover:stroke-white" />
+        )}
+      </div>
       <div className="ml-2 flex-1">
-        <h5
-          className={clsx(
-            'text-sm font-medium',
-            active && 'bg-blue-500 text-white'
-          )}
-        >
+        <h5 className="text-sm font-medium group-hover:bg-blue-500 group-hover:text-white">
           {label}
         </h5>
-        <div
-          className={clsx(
-            'mt-0.5 text-[13px] font-light',
-            active ? 'text-blue-200' : 'text-gray-500'
-          )}
-        >
+        <div className="mt-0.5 text-[13px] font-light text-gray-500 group-hover:text-blue-200">
           {description}
         </div>
       </div>

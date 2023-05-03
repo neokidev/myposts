@@ -1,13 +1,14 @@
+import clsx from 'clsx'
 import { type FC } from 'react'
 
 type CheckIconProps = {
-  active: boolean
+  className?: string
 }
 
-export const CheckIcon: FC<CheckIconProps> = ({ active }) => {
+export const CheckIcon: FC<CheckIconProps> = ({ className }) => {
   return (
     <svg
-      className={`${active ? 'stroke-white' : 'stroke-blue-500'} stroke-2`}
+      className={clsx('stroke-2', className)}
       viewBox="0 0 24 24"
       fill="none"
       strokeLinecap="round"

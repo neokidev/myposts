@@ -1,7 +1,7 @@
-import { Menu } from '@headlessui/react'
-import { useEffect, useState, type FC } from 'react'
+import { DropdownMenu } from '@/components/DropdownMenu'
+import { SubmitButtonItem } from '@/features/edit-post/components/SubmitButtonItem'
+import { useCallback, useEffect, useState, type FC } from 'react'
 import { usePreviousDifferent } from 'rooks'
-import { SubmitButtonItem } from './SubmitButtonItem'
 
 type SubmitButtonProps = {
   disabled?: boolean
@@ -16,6 +16,8 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
 }) => {
   const [_published, setPublished] = useState(published ?? true)
   const prevPublished = usePreviousDifferent(_published)
+  const handlePublishMenuClicked = useCallback(() => setPublished(true), [])
+  const handleDraftMenuClicked = useCallback(() => setPublished(false), [])
 
   useEffect(() => {
     published !== undefined && setPublished(published)
@@ -29,65 +31,53 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
   }, [prevPublished])
 
   return (
-    <div className="relative inline-flex text-right h-10">
+    <div className="flex h-10">
       <button
         type="submit"
         disabled={disabled}
-        className="inline-flex items-center justify-center rounded-l-md border-r border-gray-500 bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-700 focus:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-gray-100"
+        className="inline-flex items-center justify-center rounded-l-md border-r border-gray-500 bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-700 focus:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
       >
         {_published ? 'Publish' : 'Draft'}
       </button>
-      <Menu>
-        <Menu.Button
-          type="button"
-          disabled={disabled}
-          className="inline-flex items-center justify-center rounded-r-md bg-gray-900 px-3 py-2 text-white transition-colors hover:bg-gray-700 focus:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-gray-100"
-        >
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 8 6"
-            width="8"
-            height="6"
-            fill="none"
-            className="stroke-white"
-          >
-            <path
-              d="M7 1.5l-3 3-3-3"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-          </svg>
-        </Menu.Button>
-        <Menu.Items className="absolute right-0 top-9 mt-2 w-80 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg shadow-black/25 ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
-          <Menu.Item>
-            {({ active }) => (
-              <div>
-                <SubmitButtonItem
-                  label="Publish"
-                  description="This post can be viewed by anyone"
-                  active={active}
-                  selected={_published}
-                  onClick={() => setPublished(true)}
-                />
-              </div>
-            )}
-          </Menu.Item>
-          <Menu.Item>
-            {({ active }) => (
-              <div>
-                <SubmitButtonItem
-                  label="Draft"
-                  description="This post will not be publicly accessible"
-                  active={active}
-                  selected={!_published}
-                  onClick={() => setPublished(false)}
-                />
-              </div>
-            )}
-          </Menu.Item>
-        </Menu.Items>
-      </Menu>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          <button className="inline-flex items-center justify-center rounded-r-md bg-gray-900 px-3 py-2 text-white transition-colors hover:bg-gray-700 focus:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 8 6"
+              width="8"
+              height="6"
+              fill="none"
+              className="stroke-white"
+            >
+              <path
+                d="M7 1.5l-3 3-3-3"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content className="w-80" align="end">
+          <DropdownMenu.Item>
+            <SubmitButtonItem
+              label="Publish"
+              description="This post can be viewed by anyone"
+              selected={_published}
+              onClick={handlePublishMenuClicked}
+            />
+          </DropdownMenu.Item>
+          <DropdownMenu.Item>
+            <SubmitButtonItem
+              label="Draft"
+              description="This post will not be publicly accessible"
+              selected={!_published}
+              onClick={handleDraftMenuClicked}
+            />
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
     </div>
   )
 }

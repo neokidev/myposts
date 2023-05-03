@@ -126,7 +126,7 @@ export const EditPost: FC<EditPostProps> = ({
                 </Link>
               </div>
               <div className="flex items-center justify-center"></div>
-              <div className="flex items-center justify-end space-x-12">
+              <div className="flex items-center justify-end space-x-10">
                 <div>
                   <button
                     type="button"
@@ -149,7 +149,7 @@ export const EditPost: FC<EditPostProps> = ({
                     Preview
                   </button>
                 </div>
-                <div className="flex rounded-md shadow-sm">
+                <div className="flex justify-end w-[8rem]">
                   <SubmitButton
                     disabled={submitting}
                     published={published}
