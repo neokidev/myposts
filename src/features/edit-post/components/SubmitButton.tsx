@@ -1,7 +1,7 @@
 import { DropdownMenu } from '@/components/DropdownMenu'
-import { SubmitButtonItem } from '@/features/edit-post/components/SubmitButtonItem'
 import { useCallback, useEffect, useState, type FC } from 'react'
 import { usePreviousDifferent } from 'rooks'
+import { SubmitButtonItem } from './SubmitButtonItem'
 
 type SubmitButtonProps = {
   disabled?: boolean
@@ -41,7 +41,10 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
       </button>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <button className="inline-flex items-center justify-center rounded-r-md bg-gray-900 px-3 py-2 text-white transition-colors hover:bg-gray-700 focus:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
+          <button
+            disabled={disabled}
+            className="inline-flex items-center justify-center rounded-r-md bg-gray-900 px-3 py-2 text-white transition-colors hover:bg-gray-700 focus:outline-none focus-visible:z-10 focus-visible:ring-2 focus-visible:ring-gray-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
+          >
             <svg
               aria-hidden="true"
               viewBox="0 0 8 6"
@@ -61,20 +64,24 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
         </DropdownMenu.Trigger>
         <DropdownMenu.Content className="w-80" align="end">
           <DropdownMenu.Item>
-            <SubmitButtonItem
-              label="Publish"
-              description="This post can be viewed by anyone"
-              selected={_published}
-              onClick={handlePublishMenuClicked}
-            />
+            <div>
+              <SubmitButtonItem
+                label="Publish"
+                description="This post can be viewed by anyone"
+                selected={_published}
+                onClick={handlePublishMenuClicked}
+              />
+            </div>
           </DropdownMenu.Item>
           <DropdownMenu.Item>
-            <SubmitButtonItem
-              label="Draft"
-              description="This post will not be publicly accessible"
-              selected={!_published}
-              onClick={handleDraftMenuClicked}
-            />
+            <div>
+              <SubmitButtonItem
+                label="Draft"
+                description="This post will not be publicly accessible"
+                selected={!_published}
+                onClick={handleDraftMenuClicked}
+              />
+            </div>
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
