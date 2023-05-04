@@ -35,6 +35,20 @@ export const postRouter = createTRPCRouter({
       })
     }),
 
+  getCurrentUserPost: protectedProcedure
+    .input(
+      z.object({ id: z.string().cuid(), published: z.boolean().optional() })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.post.findFirst({
+        where: {
+          id: input.id,
+          authorId: ctx.session.user.id,
+          published: input.published,
+        },
+      })
+    }),
+
   getCurrentUserPosts: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.post.findMany({
       where: { authorId: ctx.session.user.id },
