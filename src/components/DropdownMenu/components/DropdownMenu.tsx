@@ -60,14 +60,16 @@ const Group: FC<GroupProps> = ({ children, className }) => {
 type ItemProps = {
   children: ReactNode
   className?: string
+  disableDefaultStyles?: boolean
 }
 
-const Item: FC<ItemProps> = ({ children, className }) => {
+const Item: FC<ItemProps> = ({ children, className, disableDefaultStyles }) => {
   return (
     <DropdownMenuPrimitive.Item
       asChild
       className={clsx(
-        'w-full flex items-center rounded-md px-2.5 py-1.5 outline-none hover:bg-gray-100 focus:bg-gray-100',
+        !disableDefaultStyles &&
+          'w-full flex items-center rounded-md px-2.5 py-1.5 outline-none hover:bg-gray-100 focus:bg-gray-100 hover:bg-blue-500 focus:bg-blue-500',
         className
       )}
     >
