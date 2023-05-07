@@ -63,7 +63,7 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
           </button>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content className="w-80" align="end">
-          <DropdownMenu.Item>
+          <DropdownMenu.Item disableDefaultStyles>
             <div>
               <SubmitButtonItem
                 label="Publish"
@@ -73,7 +73,7 @@ export const SubmitButton: FC<SubmitButtonProps> = ({
               />
             </div>
           </DropdownMenu.Item>
-          <DropdownMenu.Item>
+          <DropdownMenu.Item disableDefaultStyles>
             <div>
               <SubmitButtonItem
                 label="Draft"
