@@ -52,6 +52,7 @@ export const postRouter = createTRPCRouter({
   getCurrentUserPosts: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.post.findMany({
       where: { authorId: ctx.session.user.id },
+      orderBy: { updatedAt: 'desc' },
     })
   }),
 
