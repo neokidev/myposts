@@ -4,7 +4,6 @@ import { PostList } from '@/features/dashboard/components/PostList'
 import { api } from '@/utils/api'
 import { type Post } from '@prisma/client'
 import { type NextPage } from 'next'
-import Link from 'next/link'
 import { useCallback } from 'react'
 
 const generatePostUrl = (post: Post) => {
@@ -52,11 +51,6 @@ const DashboardPage: NextPage = () => {
         <Navbar />
         <div className="space-y-4">
           <h1 className="text-3xl font-bold">Posts</h1>
-          <Link href="/posts/new">
-            <button className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=open]:bg-gray-100">
-              New Post
-            </button>
-          </Link>
           <PostListArea />
         </div>
       </div>
