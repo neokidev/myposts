@@ -1,6 +1,7 @@
 import { MarkdownRenderer } from '@/components/MarkdownRenderer'
 import { SubmitButton } from '@/features/edit-post/components/SubmitButton'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { IconArticleOff } from '@tabler/icons-react'
 import clsx from 'clsx'
 import Link from 'next/link'
 import { useEffect, useRef, useState, type FC } from 'react'
@@ -41,13 +42,32 @@ type EditPostProps = {
   initialValues?: EditPostValues
 }
 
+const NoContent = () => {
+  return (
+    <div className="flex justify-center items-center">
+      <div className="flex flex-col justify-center items-center space-y-2 text-gray-400">
+        <div className=" w-20 h-20 rounded-full bg-gray-100 flex justify-center items-center">
+          <IconArticleOff size={32} strokeWidth={1.75} />
+        </div>
+        <div className="font-medium">No Content</div>
+      </div>
+    </div>
+  )
+}
+
 const PreviewArea: FC<PreviewAreaProps> = ({ title, content }) => {
   return (
     <>
-      <h1 className="mb-4 inline-block text-4xl font-extrabold leading-tight text-slate-900 lg:text-5xl">
-        {title}
-      </h1>
-      <MarkdownRenderer content={content} />
+      {title === '' && content === '' ? (
+        <NoContent />
+      ) : (
+        <>
+          <h1 className="mb-4 inline-block text-4xl font-extrabold leading-tight text-slate-900 lg:text-5xl">
+            {title}
+          </h1>
+          <MarkdownRenderer content={content} />
+        </>
+      )}
     </>
   )
 }
@@ -72,6 +92,9 @@ export const EditPost: FC<EditPostProps> = ({
       content: initialValues?.content ?? '',
     },
   })
+
+  const title = getValues('title')
+  const content = getValues('content')
 
   const { ref, ...rest } = register('content')
 
@@ -159,44 +182,43 @@ export const EditPost: FC<EditPostProps> = ({
               </div>
             </div>
           </header>
-          <div className="flex-1 container pt-2 pb-8">
-            <div className="rounded-lg border shadow-xl bg-white">
-              {mode === 'edit' && (
-                <div className="flex flex-col px-12">
-                  <div className="px-4 py-7">
-                    <input
-                      className="block w-full rounded-md ring-0 outline-none text-5xl font-extrabold"
-                      placeholder="Post title here..."
-                      {...register('title')}
-                    />
+          <main>
+            <div className="flex-1 container pt-2 pb-8">
+              <div className="rounded-lg border shadow-xl bg-white">
+                {mode === 'edit' && (
+                  <div className="flex flex-col px-12">
+                    <div className="px-4 py-7">
+                      <input
+                        className="block w-full rounded-md ring-0 outline-none text-5xl font-extrabold"
+                        placeholder="Post title here..."
+                        {...register('title')}
+                      />
+                    </div>
+                    <hr />
+                    <div className="flex-1 px-4 py-8">
+                      <textarea
+                        className="w-full resize-none rounded-md outline-none ring-0 font-mono h-auto min-h-[20rem] overflow-hidden"
+                        placeholder="Post content here..."
+                        onInput={autoResizeTextarea}
+                        {...rest}
+                        ref={(e) => {
+                          ref(e)
+                          contentRef.current = e
+                        }}
+                      />
+                    </div>
                   </div>
-                  <hr />
-                  <div className="flex-1 px-4 py-8">
-                    <textarea
-                      className="w-full resize-none rounded-md outline-none ring-0 font-mono h-auto min-h-[20rem] overflow-hidden"
-                      placeholder="Post content here..."
-                      onInput={autoResizeTextarea}
-                      {...rest}
-                      ref={(e) => {
-                        ref(e)
-                        contentRef.current = e
-                      }}
-                    />
+                )}
+                {mode === 'preview' && (
+                  <div className="flex flex-col px-12">
+                    <div className="px-4 py-8">
+                      <PreviewArea title={title} content={content} />
+                    </div>
                   </div>
-                </div>
-              )}
-              {mode === 'preview' && (
-                <div className="flex flex-col px-12">
-                  <div className="px-4 py-8">
-                    <PreviewArea
-                      title={getValues('title')}
-                      content={getValues('content')}
-                    />
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
-          </div>
+          </main>
         </div>
       </form>
       <Toaster />
