@@ -1,3 +1,4 @@
+import { LinkButton } from '@/components/Button'
 import { CurrentUserMenu } from '@/components/Layout/components/CurrentUserMenu'
 import { SignInButton } from '@/components/Layout/components/SignInButton'
 import { useSession } from 'next-auth/react'
@@ -14,7 +15,12 @@ export const Header = () => {
             <span className="font-bold">myposts</span>
           </Link>
           {status === 'unauthenticated' && <SignInButton />}
-          {status === 'authenticated' && <CurrentUserMenu />}
+          {status === 'authenticated' && (
+            <div className="flex justify-end items-center space-x-8">
+              <LinkButton href="/posts/new">New Post</LinkButton>
+              <CurrentUserMenu />
+            </div>
+          )}
         </div>
       </div>
     </header>
