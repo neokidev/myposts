@@ -28,7 +28,7 @@ const Item: FC<ItemProps> = ({ label, icon, active }) => {
 
 export const Navbar = () => {
   return (
-    <aside className="hidden lg:block overflow-y-auto">
+    <aside className="hidden md:block overflow-y-auto">
       <nav className="relative">
         <ul>
           <Item label="Posts" icon={<IconFileDescription />} active />
