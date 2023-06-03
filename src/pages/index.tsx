@@ -5,7 +5,7 @@ import { type Post } from '@/features/post-card/types/post'
 import { appRouter } from '@/server/api/root'
 import { prisma } from '@/server/prisma'
 import { createServerSideHelpers } from '@trpc/react-query/server'
-import { type GetServerSideProps, type NextPage } from 'next'
+import { type GetStaticProps, type NextPage } from 'next'
 import superjson from 'superjson'
 
 const generatePostUrl = (post: Post) => {
@@ -16,7 +16,7 @@ const generateAuthorUrl = (post: Post) => {
   return `/users/${post.authorName}`
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const helpers = createServerSideHelpers({
     router: appRouter,
     ctx: { session: null, prisma },
