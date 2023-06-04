@@ -1,11 +1,13 @@
 import { type Post } from '@/features/post-card/types/post'
 import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Image from 'next/image'
 import Link from 'next/link'
 import { type FC } from 'react'
 
 dayjs.extend(relativeTime)
+dayjs.extend(localizedFormat)
 
 export type PostCardProps = {
   post: Post
@@ -66,7 +68,7 @@ export const PostCard: FC<PostCardProps> = ({
           </div>
         )}
         <div className="text-xs text-gray-500 font-light">
-          {dayjs(post.createdAt).fromNow()}
+          {dayjs(post.createdAt).format('ll')}
         </div>
       </div>
     </article>
