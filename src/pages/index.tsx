@@ -2,7 +2,7 @@ import { MainLayout } from '@/components/Layout/components/MainLayout'
 import { PostCardGrid } from '@/features/post-card/components/PostCardGrid'
 import { usePublishedPosts } from '@/features/post-card/hooks/usePublishedPosts'
 import { type Post } from '@/features/post-card/types/post'
-import { appRouter } from '@/server/api/root'
+import { appRouter, type AppRouter } from '@/server/api/root'
 import { prisma } from '@/server/prisma'
 import { createServerSideHelpers } from '@trpc/react-query/server'
 import { type GetStaticProps, type NextPage } from 'next'
@@ -17,7 +17,7 @@ const generateAuthorUrl = (post: Post) => {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const helpers = createServerSideHelpers({
+  const helpers = createServerSideHelpers<AppRouter>({
     router: appRouter,
     ctx: { session: null, prisma },
     transformer: superjson,
