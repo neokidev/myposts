@@ -10,7 +10,7 @@ on:
     - cron: '0 * * * *'
 
 jobs:
-  deploy:
+  deploy-preview:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -18,4 +18,14 @@ jobs:
         with:
           node-version: 18
       - run: npm install --global vercel@latest
-      - run: vercel deploy --yes --token=${{ secrets.VERCEL_TOKEN }}
+      - run: vercel deploy --yes --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install --global vercel@latest
+      - run: vercel deploy --yes --prod --token=${{ secrets.VERCEL_TOKEN }}
