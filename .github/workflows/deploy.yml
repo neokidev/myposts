@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: 18
       - run: npm install --global vercel@latest
-      - run: vercel deploy --yes --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+      - run: vercel deploy --yes --token=${{ secrets.VERCEL_TOKEN }}
 
   deploy-production:
     runs-on: ubuntu-latest
