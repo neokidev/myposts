@@ -29,6 +29,7 @@ export const usePublishedPosts = (params?: UsePublishedPostsParams) => {
     },
     {
       select: transformer,
+      enabled: false,
     }
   )
 }
