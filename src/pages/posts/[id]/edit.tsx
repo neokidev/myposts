@@ -2,8 +2,9 @@ import { BlankLayout } from '@/components/Layout'
 import { EditPost, type EditPostValues } from '@/features/edit-post'
 import { prisma } from '@/server/prisma'
 import { api } from '@/utils/api'
-import { revalidatePost } from '@/utils/revalidate'
+import { revalidatePost, revalidateUser } from '@/utils/revalidate'
 import { type GetServerSideProps, type NextPage } from 'next'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
@@ -53,10 +54,12 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
 
 const EditPage: NextPage<Props> = ({ post }) => {
   const router = useRouter()
+  const { data: session } = useSession()
 
   const updatePost = api.post.updatePost.useMutation({
     onSuccess: async () => {
       await revalidatePost(post.id)
+      await revalidateUser(session?.user.name ?? '')
       await router.push('/dashboard')
     },
     onError: () => {
@@ -72,7 +75,7 @@ const EditPage: NextPage<Props> = ({ post }) => {
   )
 
   return (
-    <BlankLayout>
+    <BlankLayout isProtected>
       <EditPost
         backUrl="/dashboard"
         onSubmit={handleSubmit}

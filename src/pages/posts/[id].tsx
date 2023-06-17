@@ -9,6 +9,7 @@ import { useEffect, type FC } from 'react'
 type Post = {
   title: string
   content: string
+  authorName: string
 }
 
 type Props = {
@@ -35,6 +36,9 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     where: {
       id: params.id,
     },
+    include: {
+      author: true,
+    },
   })
 
   if (post === null) {
@@ -53,13 +57,17 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     }
   }
 
-  console.log('else')
+  if (post.author.name === null) {
+    throw new Error('Post author name is null')
+  }
+
   return {
     props: {
       postId: post.id,
       publishedPost: {
         title: post.title,
         content: post.content ?? '',
+        authorName: post.author.name,
       },
     },
   }
@@ -111,10 +119,14 @@ const PostPage: NextPage<Props> = ({ postId, publishedPost }) => {
       select: (data): Post | undefined => {
         if (data === null) {
           return undefined
+        } else if (data.author.name === null) {
+          throw new Error('Post author name is null')
         }
+
         return {
           title: data.title,
           content: data.content ?? '',
+          authorName: data.author.name,
         }
       },
     }

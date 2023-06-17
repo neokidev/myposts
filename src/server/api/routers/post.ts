@@ -46,6 +46,9 @@ export const postRouter = createTRPCRouter({
           authorId: ctx.session.user.id,
           published: input.published,
         },
+        include: {
+          author: true,
+        },
       })
     }),
 
@@ -53,6 +56,9 @@ export const postRouter = createTRPCRouter({
     return ctx.prisma.post.findMany({
       where: { authorId: ctx.session.user.id },
       orderBy: { updatedAt: 'desc' },
+      include: {
+        author: true,
+      },
     })
   }),
 

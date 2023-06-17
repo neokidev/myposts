@@ -1,13 +1,9 @@
 import { MainLayout } from '@/components/Layout/components/MainLayout'
 import { PostCardGrid } from '@/features/post-card/components/PostCardGrid'
-import { usePublishedPosts } from '@/features/post-card/hooks/usePublishedPosts'
 import { type Post } from '@/features/post-card/types/post'
-import { appRouter, type AppRouter } from '@/server/api/root'
 import { prisma } from '@/server/prisma'
-import { createServerSideHelpers } from '@trpc/react-query/server'
 import { type GetStaticPaths, type GetStaticProps, type NextPage } from 'next'
 import Image from 'next/image'
-import superjson from 'superjson'
 
 const generatePostUrl = (post: Post) => {
   return `/posts/${post.id}`
@@ -18,6 +14,7 @@ type Props = {
     id: string
     name: string
     image?: string
+    posts: Post[]
   }
 }
 
@@ -36,6 +33,16 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     where: {
       name: params.name,
     },
+    include: {
+      Post: {
+        where: {
+          published: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
+    },
   })
 
   if (users.length === 0) {
@@ -51,27 +58,20 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
     return { notFound: true }
   }
 
-  const helpers = createServerSideHelpers<AppRouter>({
-    router: appRouter,
-    ctx: { session: null, prisma },
-    transformer: superjson,
-  })
-
-  await helpers.post.getPublishedPosts.prefetch({
-    page: 1,
-    pageSize: 20,
-    authorId: user.id,
-  })
-
   return {
     props: {
-      trpcState: helpers.dehydrate(),
       user: {
         id: user.id,
         name: user.name,
         image: user.image ?? undefined,
+        posts: user.Post.map((post) => ({
+          id: post.id,
+          title: post.title,
+          authorName: user.name ?? '',
+          authorImage: user.image ?? undefined,
+          createdAt: post.createdAt,
+        })),
       },
-      revalidate: 10,
     },
   }
 }
@@ -96,8 +96,6 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
 }
 
 const UserPage: NextPage<Props> = ({ user }) => {
-  const { data: posts, isLoading } = usePublishedPosts({ authorId: user.id })
-
   return (
     <MainLayout>
       <div className="flex flex-col items-center">
@@ -108,8 +106,7 @@ const UserPage: NextPage<Props> = ({ user }) => {
         )}
         <h1 className="text-4xl font-extrabold mb-6">{`${user.name}'s Posts`}</h1>
         <PostCardGrid
-          posts={posts}
-          isLoading={isLoading}
+          posts={user.posts}
           postUrl={generatePostUrl}
           showAuthor={false}
         />
