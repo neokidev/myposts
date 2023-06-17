@@ -29,6 +29,7 @@
     "@trpc/next": "^10.18.0",
     "@trpc/react-query": "^10.29.0",
     "@trpc/server": "^10.18.0",
+    "babel-plugin-superjson-next": "^0.4.5",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.7",
     "lodash": "^4.17.21",
