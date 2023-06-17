@@ -4,7 +4,6 @@ import { prisma } from '@/server/prisma'
 import { api } from '@/utils/api'
 import { type GetStaticPaths, type GetStaticProps, type NextPage } from 'next'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
 import { useEffect, type FC } from 'react'
 
 type Post = {
@@ -13,6 +12,7 @@ type Post = {
 }
 
 type Props = {
+  postId: string
   publishedPost: Post | null
 }
 
@@ -28,32 +28,38 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
   params,
 }) => {
   if (params === undefined) {
-    return {
-      props: {
-        publishedPost: null,
-      },
-    }
+    throw new Error('params is undefined')
   }
 
-  const publishedPost = await prisma.post.findFirst({
+  const post = await prisma.post.findFirst({
     where: {
       id: params.id,
-      published: true,
     },
   })
-  if (publishedPost === null) {
+
+  if (post === null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/404',
+      },
+    }
+  } else if (post.published === false) {
     return {
       props: {
+        postId: post.id,
         publishedPost: null,
       },
     }
   }
 
+  console.log('else')
   return {
     props: {
+      postId: post.id,
       publishedPost: {
-        title: publishedPost.title,
-        content: publishedPost.content ?? '',
+        title: post.title,
+        content: post.content ?? '',
       },
     },
   }
@@ -88,27 +94,20 @@ const Inner: FC<InnerProps> = ({ post }) => {
   )
 }
 
-const PostPage: NextPage<Props> = ({ publishedPost }) => {
-  const { data: session, status: sessionStatus } = useSession()
-  console.log('session:', session)
-  const router = useRouter()
-  const { id } = router.query
-
-  if (id === undefined || Array.isArray(id)) {
-    throw new Error('id is undefined or array')
-  }
+const PostPage: NextPage<Props> = ({ postId, publishedPost }) => {
+  const { status: sessionStatus } = useSession()
 
   const {
     data: draftPost,
     isLoading: isDraftPostLoading,
-    refetch,
+    refetch: refetchDraftPost,
   } = api.post.getCurrentUserPost.useQuery(
     {
-      id,
+      id: postId,
       published: false,
     },
     {
-      refetchOnMount: false,
+      enabled: false,
       select: (data): Post | undefined => {
         if (data === null) {
           return undefined
@@ -123,23 +122,16 @@ const PostPage: NextPage<Props> = ({ publishedPost }) => {
 
   useEffect(() => {
     if (sessionStatus === 'authenticated') {
-      refetch().catch(() => {
+      refetchDraftPost().catch(() => {
         throw new Error('refetch failed')
       })
     }
-  }, [sessionStatus, refetch])
+  }, [sessionStatus, refetchDraftPost])
 
   if (
     publishedPost === null &&
     (sessionStatus === 'loading' || isDraftPostLoading)
   ) {
-    return null
-  }
-
-  if (publishedPost === null && draftPost == null) {
-    router.replace('/404').catch(() => {
-      throw new Error('redirect failed')
-    })
     return null
   }
 

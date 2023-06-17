@@ -2,6 +2,7 @@ import { BlankLayout } from '@/components/Layout'
 import { EditPost, type EditPostValues } from '@/features/edit-post'
 import { prisma } from '@/server/prisma'
 import { api } from '@/utils/api'
+import { revalidatePost } from '@/utils/revalidate'
 import { type GetServerSideProps, type NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useCallback } from 'react'
@@ -55,6 +56,7 @@ const EditPage: NextPage<Props> = ({ post }) => {
 
   const updatePost = api.post.updatePost.useMutation({
     onSuccess: async () => {
+      await revalidatePost(post.id)
       await router.push('/dashboard')
     },
     onError: () => {
