@@ -2,6 +2,7 @@ import { MainLayout } from '@/components/Layout'
 import { Navbar } from '@/features/dashboard'
 import { PostList } from '@/features/dashboard/components/PostList'
 import { api } from '@/utils/api'
+import { revalidatePost } from '@/utils/revalidate'
 import { type Post } from '@prisma/client'
 import { type NextPage } from 'next'
 import { useCallback } from 'react'
@@ -21,10 +22,9 @@ const PostListArea = () => {
     refetch,
   } = api.post.getCurrentUserPosts.useQuery()
   const deleteMutation = api.post.deletePost.useMutation({
-    onSuccess: () => {
-      refetch().catch(() => {
-        throw new Error('Failed to refetch posts')
-      })
+    onSuccess: async (post) => {
+      await revalidatePost(post.id)
+      await refetch()
     },
   })
 
