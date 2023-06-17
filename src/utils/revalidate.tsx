@@ -8,3 +8,14 @@ export const revalidatePost = async (postId: string) => {
     console.error('error', error)
   })
 }
+
+export const revalidateUser = async (userId: string) => {
+  await fetch('/api/revalidate-user', {
+    method: 'POST',
+    body: JSON.stringify({
+      id: userId,
+    }),
+  }).catch((error) => {
+    console.error('error', error)
+  })
+}

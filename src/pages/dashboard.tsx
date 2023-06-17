@@ -2,9 +2,10 @@ import { MainLayout } from '@/components/Layout'
 import { Navbar } from '@/features/dashboard'
 import { PostList } from '@/features/dashboard/components/PostList'
 import { api } from '@/utils/api'
-import { revalidatePost } from '@/utils/revalidate'
+import { revalidatePost, revalidateUser } from '@/utils/revalidate'
 import { type Post } from '@prisma/client'
 import { type NextPage } from 'next'
+import { useSession } from 'next-auth/react'
 import { useCallback } from 'react'
 
 const generatePostUrl = (post: Post) => {
@@ -16,6 +17,8 @@ const generateEditPostUrl = (post: Post) => {
 }
 
 const PostListArea = () => {
+  const { data: session } = useSession()
+
   const {
     data: posts,
     isLoading,
@@ -24,6 +27,7 @@ const PostListArea = () => {
   const deleteMutation = api.post.deletePost.useMutation({
     onSuccess: async (post) => {
       await revalidatePost(post.id)
+      await revalidateUser(session?.user?.name ?? '')
       await refetch()
     },
   })

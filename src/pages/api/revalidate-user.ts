@@ -36,13 +36,13 @@ export default async function handler(
         return res.status(400).send('Invalid body')
       }
 
-      const { id: postId } = JSON.parse(
+      const { id: userId } = JSON.parse(
         req.body as unknown as string
       ) as RequestBody
 
       try {
-        console.log('revalidating:', `/posts/${postId}`)
-        await res.revalidate(`/posts/${postId}`)
+        console.log('revalidating:', `/users/${userId}`)
+        await res.revalidate(`/users/${userId}`)
         return res.json({ revalidated: true })
       } catch (err) {
         return res.status(500).send('Error revalidating')

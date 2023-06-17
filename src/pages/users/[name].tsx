@@ -34,7 +34,14 @@ export const getStaticProps: GetStaticProps<Props, Params> = async ({
       name: params.name,
     },
     include: {
-      Post: true,
+      Post: {
+        where: {
+          published: true,
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      },
     },
   })
 
