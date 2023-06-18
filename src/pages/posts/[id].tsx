@@ -4,6 +4,7 @@ import { prisma } from '@/server/prisma'
 import { api } from '@/utils/api'
 import { type GetStaticPaths, type GetStaticProps, type NextPage } from 'next'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import { useEffect, type FC } from 'react'
 
 type Post = {
@@ -91,6 +92,18 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
   }
 }
 
+const RedirectTo404: FC = () => {
+  const router = useRouter()
+
+  useEffect(() => {
+    router.push('/404').catch(() => {
+      throw new Error('redirect failed')
+    })
+  }, [router])
+
+  return null
+}
+
 const Inner: FC<InnerProps> = ({ post }) => {
   return (
     <>
@@ -151,7 +164,7 @@ const PostPage: NextPage<Props> = ({ postId, publishedPost }) => {
 
   return (
     <MainLayout className="max-w-3xl">
-      {post !== undefined && <Inner post={post} />}
+      {post === undefined ? <RedirectTo404 /> : <Inner post={post} />}
     </MainLayout>
   )
 }
