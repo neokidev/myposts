@@ -2,6 +2,7 @@ import { LinkButton } from '@/components/Button'
 import { CurrentUserMenu } from '@/components/Layout/components/CurrentUserMenu'
 import { SignInButton } from '@/components/Layout/components/SignInButton'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import Link from 'next/link'
 
 export const Header = () => {
@@ -12,7 +13,7 @@ export const Header = () => {
       <div className="container">
         <div className="flex h-16 items-center justify-between py-4">
           <Link href="/">
-            <span className="font-bold">myposts</span>
+            <Image src="/logo.svg" alt="logo" width={96} height={0} />
           </Link>
           {status === 'unauthenticated' && <SignInButton />}
           {status === 'authenticated' && (
